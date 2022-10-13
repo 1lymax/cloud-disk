@@ -4,11 +4,9 @@ import {Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui
 
 import {logout} from "../../store/reducers/UserSlice";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
-import Tokens from "../../utils/Tokens";
 
 const AccountMenu: FC = () => {
     const dispatch = useAppDispatch()
-    const tokens = Tokens.getInstance()
     const {enqueueSnackbar} = useSnackbar()
     const [isOpen, setIsOpen] = React.useState<null | HTMLElement>(null)
     const user = useAppSelector(state => state.userState.currentUser)
@@ -30,7 +28,6 @@ const AccountMenu: FC = () => {
 
     const handleLogout = () => {
         dispatch(logout())
-        tokens.clear();
         enqueueSnackbar("You have successfully logged out", {variant: "success"});
     };
 
@@ -42,7 +39,7 @@ const AccountMenu: FC = () => {
             <Tooltip title="Open settings">
 
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                    <Avatar alt={user.email} src="/static/images/avatar/2.jpg"/>
+                    <Avatar alt={user.email.toUpperCase()} src="/static/images/avatar/2.jpg"/>
                 </IconButton>
             </Tooltip>
             <Menu

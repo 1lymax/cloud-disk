@@ -1,4 +1,4 @@
-import {Avatar, Box, Checkbox, FormControlLabel, Grid, Link, TextField, Typography} from '@mui/material';
+import {Avatar, Box, Grid, Link, TextField, Typography} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import React, {useEffect, useState} from 'react';

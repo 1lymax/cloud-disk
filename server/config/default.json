@@ -1,5 +1,6 @@
 {
   "serverPort": 5000,
   "dbUrl": "mongodb+srv://cloud-disk:8gig26ohKdh2LC1x@cloud-disk.usxadt7.mongodb.net/?retryWrites=true&w=majority",
-  "secretKey": "some-secret-key-for-cloud-disk"
+  "secretKey": "some-secret-key-for-cloud-disk",
+  "filePath":"D:\\Документы\\projects\\javascript\\cloud-disk\\server\\files"
 }

@@ -1,6 +1,9 @@
 import {IUser} from "../../models/IUser";
 import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../store";
+import Tokens from "../../utils/Tokens";
+
+const tokens = Tokens.getInstance()
 
 interface UserState {
     currentUser: IUser;
@@ -9,7 +12,7 @@ interface UserState {
 
 const initialState: UserState = {
     currentUser: {
-        id: 0,
+        id: '',
         email: '',
         diskSpace: 0,
         usedSpace: 0,
@@ -30,6 +33,14 @@ export const userSlice = createSlice({
         },
         logout: (state) => {
             state.isAuth = false
+            state.currentUser = {
+                id: '',
+                email: '',
+                diskSpace: 0,
+                usedSpace: 0,
+                avatar: '',
+            }
+            tokens.clear();
         },
     },
 })
