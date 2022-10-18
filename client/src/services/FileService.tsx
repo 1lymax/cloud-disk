@@ -1,0 +1,57 @@
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import {IFile, IFileApiAnswer, IFileCreate} from "../models/IFile";
+import {LocalStorage} from "ts-localstorage";
+import {ACCESS_TOKEN} from "../utils/consts";
+import {Key} from "react";
+
+export const fileAPI = createApi({
+    reducerPath: 'fileAPI',
+    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/'}),
+    tagTypes: ['File'],
+    endpoints: (build) => ({
+        getFiles: build.query<IFileApiAnswer, Key>({
+            query: (dirid:Key ) => ({
+                url: `api/files`,
+                method: 'GET',
+                headers: {
+                    'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
+                },
+                params: dirid ? {parent: dirid} : {}
+            }),
+            providesTags: ['File']
+
+        }),
+        createDir: build.mutation<IFile, IFileCreate>({
+            query: (params) => ({
+                url: 'api/files',
+                method: 'POST',
+                headers: {
+                    'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
+                },
+                body: {
+                    name: params.name,
+                    type: 'dir',
+                    parent: params.parent ? params.parent: undefined
+                }
+            }),
+            invalidatesTags: ['File']
+        })
+
+        // registration: build.mutation<IUser, UserAuthQuery>({
+        //     query: (query) => ({
+        //         url: `api/auth/registration`,
+        //         method: 'POST',
+        //         body: query
+        //     }),
+        //
+        // }),
+        // token: build.query<UserAuthAnswer, void>({
+        //     query: () => ({
+        //         url: `api/auth/token`,
+        //         }
+        //     }),
+        //
+        // }),
+
+    })
+})

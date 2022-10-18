@@ -3,7 +3,7 @@ import {AppBar, Box, Button, Divider, IconButton, Toolbar, Typography} from "@mu
 import CloudCircleIcon from '@mui/icons-material/CloudCircle';
 import {useAppSelector} from "../../hooks/hooks";
 import AccountMenu from "./AccountMenu";
-import {LOGIN_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
+import {LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
 import {useNavigate} from "react-router-dom";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -17,16 +17,18 @@ const Navbar = () => {
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        sx={{mr: 2}}
+                    <Typography variant="h6"
+                                onClick={()=>navigate(MAIN_ROUTE)}
+                                component="div" sx={{flexGrow: 1}}
                     >
-                        <CloudCircleIcon/>
-                    </IconButton>
-
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        <IconButton
+                            size="large"
+                            edge="start"
+                            color="inherit"
+                            sx={{mr: 2}}
+                        >
+                            <CloudCircleIcon/>
+                        </IconButton>
                         Cloud disk
                     </Typography>
 

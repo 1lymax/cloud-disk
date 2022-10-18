@@ -1,8 +1,9 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {IUser, UserAuthAnswer, UserAuthQuery} from "../models/IUser";
-import Tokens from "../utils/Tokens";
 
-const tokens = Tokens.getInstance()
+import {ACCESS_TOKEN} from "../utils/consts";
+import {LocalStorage} from "ts-localstorage";
+import {IUser, UserAuthAnswer, UserAuthQuery} from "../models/IUser";
+
 
 export const userAPI = createApi({
     reducerPath: 'userAPI',
@@ -28,7 +29,7 @@ export const userAPI = createApi({
             query: () => ({
                 url: `api/auth/token`,
                 headers: {
-                    'Authorization': 'Bearer '+ tokens.getAccessToken()
+                    'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
                 }
             }),
 

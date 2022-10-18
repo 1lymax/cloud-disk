@@ -1,9 +1,9 @@
-import {IUser} from "../../models/IUser";
-import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../store";
-import Tokens from "../../utils/Tokens";
+import {IUser} from "../../models/IUser";
+import {LocalStorage} from "ts-localstorage";
+import {createSlice} from "@reduxjs/toolkit";
+import {ACCESS_TOKEN} from "../../utils/consts";
 
-const tokens = Tokens.getInstance()
 
 interface UserState {
     currentUser: IUser;
@@ -40,7 +40,7 @@ export const userSlice = createSlice({
                 usedSpace: 0,
                 avatar: '',
             }
-            tokens.clear();
+            LocalStorage.setItem(ACCESS_TOKEN, '');
         },
     },
 })

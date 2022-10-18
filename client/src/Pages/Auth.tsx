@@ -1,24 +1,25 @@
-import {Avatar, Box, Grid, Link, TextField, Typography} from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import React, {useEffect, useState} from 'react';
-import {userAPI} from "../services/UserService";
 import {useSnackbar} from 'notistack';
-import {getErrorMessage} from "../utils/getErrorMessage";
+import {LocalStorage} from "ts-localstorage";
+import React, {useEffect, useState} from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {useAppDispatch} from "../hooks/hooks";
-import {setAuth, setCurrentUser} from "../store/reducers/UserSlice";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
-import {CLOUD_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
-import Tokens from "../utils/Tokens";
+import {Avatar, Box, Grid, Link, TextField, Typography} from '@mui/material';
+
+import {useAppDispatch, useAppSelector} from "../hooks/hooks";
+import {userAPI} from "../services/UserService";
+import {getErrorMessage} from "../utils/getErrorMessage";
+import {setAuth, setCurrentUser} from "../store/reducers/UserSlice";
+import {ACCESS_TOKEN, DISK_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 
 
 const Auth = () => {
-    const tokens = Tokens.getInstance();
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const {enqueueSnackbar} = useSnackbar()
+    const isAuth = useAppSelector(state => state.userState.isAuth)
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -47,13 +48,20 @@ const Auth = () => {
             enqueueSnackbar(getErrorMessage(loginError || regError), {variant: "error"});
     }, [loginError, regError]);
 
-    if (loginSuccess) {
-        enqueueSnackbar("Successfully logged in", {variant: "success"});
-        dispatch(setCurrentUser(loginData?.user));
-        dispatch(setAuth(true))
-        tokens.setAccessToken(loginData?.token || '');
-        navigate(CLOUD_ROUTE)
-    }
+    useEffect(() => {
+        if (loginSuccess) {
+            console.log('login success')
+            enqueueSnackbar("Successfully logged in", {variant: "success"});
+            dispatch(setCurrentUser(loginData?.user));
+            dispatch(setAuth(true))
+            LocalStorage.setItem(ACCESS_TOKEN, loginData?.token);
+        }
+    }, [loginSuccess]);
+
+    useEffect(() => {
+        console.log('navigate to disk')
+        if (isAuth) navigate(DISK_ROUTE)
+    }, [isAuth]);
 
     useEffect(() => {
         if (regSuccess) {

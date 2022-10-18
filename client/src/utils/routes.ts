@@ -1,12 +1,12 @@
 import Auth from "../Pages/Auth";
-import {CLOUD_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "./consts";
-import Cloud from "../Pages/Cloud";
+import {DISK_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "./consts";
 import Main from "../Pages/Main";
+import Disk from "../components/disk/Disk";
 
 export const authRoutes = [
     {
-        path: CLOUD_ROUTE,
-        Component: Cloud,
+        path: DISK_ROUTE,
+        Component: Disk,
     },
 ]
 
