@@ -1,5 +1,8 @@
+import {useSnackbar} from "notistack";
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Grid, Typography} from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
+import {Box, Button, Grid, Stack, Typography} from "@mui/material";
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
@@ -9,7 +12,7 @@ import {fileAPI} from "../../services/FileService";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {popDirStack, setCurrentDir, setFiles} from "../../store/reducers/FileSlice";
 import {getErrorMessage} from "../../utils/getErrorMessage";
-import {useSnackbar} from "notistack";
+
 
 
 const Disk = () => {
@@ -21,6 +24,12 @@ const Disk = () => {
     const currentDir = useAppSelector(state => state.fileState.currentDir)
 
     const {data, isSuccess, isLoading, error} = fileAPI.useGetFilesQuery(currentDir)
+    const [uploadFile, {
+        isLoading: uploadLoading,
+        error: uploadError,
+        isSuccess: uploadSuccess
+    }] = fileAPI.useUploadFileMutation()
+
 
     useEffect(() => {
         if (isSuccess) {
@@ -28,9 +37,25 @@ const Disk = () => {
         }
     }, [isSuccess, data]);
 
+    useEffect(() => {
+        if (uploadSuccess) {
+            enqueueSnackbar('Upload success', {variant: "success"});
+        }
+    }, [uploadSuccess]);
+
     const handleBackButton = () => {
         dispatch(popDirStack())
     };
+
+    const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const formData: any = new FormData()
+        const file = e.target.files && e.target.files[0]
+        formData.append('file', file)
+        if (currentDir)
+            formData.append('parent', currentDir);
+        uploadFile(formData)
+
+    }
 
     useEffect(() => {
         const backDirId = dirStack.length ? dirStack[dirStack.length - 1] : ''
@@ -38,36 +63,45 @@ const Disk = () => {
     }, [dirStack]);
 
     useEffect(() => {
-        if (error) {
-            enqueueSnackbar(getErrorMessage(error), {variant: "error"});
+        if (error || uploadError) {
+            enqueueSnackbar(getErrorMessage(error || uploadError), {variant: "error"});
         }
-    }, [error]);
+    }, [error || uploadError]);
 
     return (
         <Box sx={{m: 2}}>
             <ModalCreateDir currentDir={currentDir} open={modalOpen} setOpen={setModalOpen}/>
-            {currentDir
-                ?
+            <Stack direction="row" alignItems="center" spacing={1}>
+                {currentDir &&
+					<Button size="large"
+							startIcon={<KeyboardBackspaceIcon/>}
+							variant="text"
+							sx={{textTransform: "none"}}
+							onClick={() => handleBackButton()}
+					>
+						Back
+					</Button>
+                }
                 <Button size="large"
-                        startIcon={<KeyboardBackspaceIcon/>}
+                        startIcon={<CreateNewFolderIcon/>}
                         variant="text"
                         sx={{textTransform: "none"}}
-                        onClick={() => handleBackButton()}
+                        onClick={() => setModalOpen(!modalOpen)}
                 >
-                    Back
+                    Create Dir
                 </Button>
-                :
-                <></>
-            }
-            <Button size="large"
-                    startIcon={<CreateNewFolderIcon/>}
+                <LoadingButton
+                    loading={uploadLoading}
+                    loadingPosition="start"
+                    startIcon={<CloudDownloadIcon/>}
                     variant="text"
+                    component="label"
                     sx={{textTransform: "none"}}
-                    onClick={() => setModalOpen(!modalOpen)}
-            >
-                Create Dir
-            </Button>
-            <input type="file" placeholder="Upload"/>
+                >
+                    Upload
+                    <input hidden type="file" onChange={handleUpload}/>
+                </LoadingButton>
+            </Stack>
             <Box sx={{mb: 4, m: 2,}}>
                 <Grid container sx={{display: "grid", gridTemplateColumns: "1fr 4fr repeat(4, 1fr)"}}>
                     <Grid item sx={{gridColumnStart: 2}}>

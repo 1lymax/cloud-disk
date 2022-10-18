@@ -50,7 +50,7 @@ class FileController {
 			const user = await User.findOne({_id: req.user.id})
 
 			if (user.usedSpace + file.size > user.diskSpace) {
-				return res.status(400).json({message: "Disk quota exceeded"})
+				return res.status(400).json({message: "File was not uploaded. Disk quota exceeded"})
 			}
 
 			user.usedSpace = user.usedSpace + file.size

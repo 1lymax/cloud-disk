@@ -12,6 +12,7 @@ class FileService {
 				} else {
 					return reject({message: 'File already exist'})
 				}
+
 			} catch (e) {
 				console.log(e)
 				return reject({message: 'File error'})

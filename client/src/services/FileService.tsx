@@ -35,23 +35,17 @@ export const fileAPI = createApi({
                 }
             }),
             invalidatesTags: ['File']
+        }),
+        uploadFile: build.mutation<IFile, IFileCreate>({
+            query: (params) => ({
+                url: 'api/files/upload',
+                method: 'POST',
+                headers: {
+                    'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
+                },
+                body: params,
+            }),
+            invalidatesTags: ['File']
         })
-
-        // registration: build.mutation<IUser, UserAuthQuery>({
-        //     query: (query) => ({
-        //         url: `api/auth/registration`,
-        //         method: 'POST',
-        //         body: query
-        //     }),
-        //
-        // }),
-        // token: build.query<UserAuthAnswer, void>({
-        //     query: () => ({
-        //         url: `api/auth/token`,
-        //         }
-        //     }),
-        //
-        // }),
-
     })
 })
