@@ -20,13 +20,24 @@ const FileUploader: FC<FileUploaderProps> = ({refetch, dragEnter, dragEnterHandl
     const currentDir = useAppSelector(state => state.fileState.currentDir)
     const {
         mutate: uploadFile,
-        isLoading: uploadLoading,
         error: uploadError,
         isSuccess: uploadSuccess,
     } = useFileUploadMutation()
 
-    const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files
+
+    const uploadButtonHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        uploadFiles(e.target.files)
+
+    }
+
+    const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        uploadFiles(e.dataTransfer.files)
+        dragLeaveHandler(e)
+    }
+
+    const uploadFiles = (files:FileList | null) => {
         if (files)
             Array.from(files).forEach(file => {
                     const formData: any = new FormData()
@@ -65,7 +76,7 @@ const FileUploader: FC<FileUploaderProps> = ({refetch, dragEnter, dragEnterHandl
                     sx={{textTransform: "none", border: "2px dashed", paddingInline: 3}}
                 >
                     Upload
-                    <input hidden type="file" multiple onChange={handleUpload}/>
+                    <input hidden type="file" multiple onChange={uploadButtonHandler}/>
                 </LoadingButton>
                 :
                 <Box sx={{
@@ -82,6 +93,7 @@ const FileUploader: FC<FileUploaderProps> = ({refetch, dragEnter, dragEnterHandl
                      onDragEnter={(e) => dragEnterHandler(e)}
                      onDragLeave={(e) => dragLeaveHandler(e)}
                      onDragOver={(e) => dragEnterHandler(e)}
+                     onDrop={(e) => dropHandler(e)}
                 >
                     Перетащите файлы
                 </Box>

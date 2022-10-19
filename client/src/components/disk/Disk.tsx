@@ -9,6 +9,7 @@ import {fileAPI} from "../../services/FileService";
 import {getErrorMessage} from "../../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {setCurrentDir, setFiles} from "../../store/reducers/FileSlice";
+import UploaderProgress from "./UploaderProgress";
 
 
 const Disk = () => {
@@ -65,6 +66,7 @@ const Disk = () => {
 									  dragEnterHandler={dragEnterHandler}
 						/>
 					</Stack>
+                    <UploaderProgress/>
 					<Box sx={{mb: 4, m: 2,}}>
 						<Grid container sx={{display: "grid", gridTemplateColumns: "1fr 4fr repeat(4, 1fr)"}}>
 							<Grid item sx={{gridColumnStart: 2}}>

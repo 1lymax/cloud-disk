@@ -6,7 +6,7 @@ import {Key} from "react";
 
 export interface IUploadProgress {
     file: String;
-    progress: Number;
+    progress: number;
 }
 
 interface FileState {
@@ -39,13 +39,12 @@ export const fileSlice = createSlice({
         pushDirStack: (state, action: PayloadAction<Key>) => {
             state.dirStack.push(action.payload)
         },
-        clearUploadProgress: (state) => {
-
-        },
+        // clearUploadProgress: (state) => {
+        //
+        // },
         updateUploadProgress: (state, action: PayloadAction<IUploadProgress>) => {
-            console.log('uploadProgress', action.payload)
             const update = state.uploadProgress.findIndex(i => i.file === action.payload.file)
-            if (update != -1)
+            if (update !== -1)
                 state.uploadProgress[update]=action.payload
             else
                 state.uploadProgress.push(action.payload)
