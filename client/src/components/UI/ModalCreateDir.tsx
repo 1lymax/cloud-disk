@@ -5,8 +5,8 @@ import React, {FC, Key, useEffect, useState} from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, TextField} from "@mui/material";
 
 import {fileAPI} from "../../services/FileService";
-import {getErrorMessage} from "../../utils/getErrorMessage";
 import LoadingButton from "@mui/lab/LoadingButton";
+import {getErrorMessage} from "../../utils/getErrorMessage";
 
 interface ModalCreateDirProps {
     currentDir: Key | null;

@@ -9,6 +9,7 @@ export const fileAPI = createApi({
     baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/'}),
     tagTypes: ['File'],
     endpoints: (build) => ({
+        
         getFiles: build.query<IFileApiAnswer, Key>({
             query: (dirid:Key ) => ({
                 url: `api/files`,
@@ -21,6 +22,7 @@ export const fileAPI = createApi({
             providesTags: ['File']
 
         }),
+
         createDir: build.mutation<IFile, IFileCreate>({
             query: (params) => ({
                 url: 'api/files',
@@ -36,6 +38,7 @@ export const fileAPI = createApi({
             }),
             invalidatesTags: ['File']
         }),
+
         uploadFile: build.mutation<IFile, IFileCreate>({
             query: (params) => ({
                 url: 'api/files/upload',

@@ -5,11 +5,14 @@ import Container from "@mui/material/Container";
 import "./App.css";
 import NavBar from "./components/UI/Navbar";
 import AppRouter from "./components/AppRouter";
+import {QueryClient, QueryClientProvider } from 'react-query';
 
 
 function App() {
+    const queryClient = new QueryClient()
 
         return (
+            <QueryClientProvider client={queryClient}>
         <BrowserRouter>
             <Container fixed>
                 <NavBar/>
@@ -17,6 +20,7 @@ function App() {
                 <AppRouter/>
             </Container>
         </BrowserRouter>
+            </QueryClientProvider>
     );
 }
 

@@ -4,15 +4,22 @@ import {IFile} from "../../models/IFile";
 import {Key} from "react";
 
 
+export interface IUploadProgress {
+    file: String;
+    progress: Number;
+}
+
 interface FileState {
     files: IFile[];
     dirStack: Key[];
+    uploadProgress: IUploadProgress[];
     currentDir: Key;
 }
 
 const initialState: FileState = {
     files: [],
     dirStack: [],
+    uploadProgress: [],
     currentDir: '',
 }
 
@@ -32,12 +39,23 @@ export const fileSlice = createSlice({
         pushDirStack: (state, action: PayloadAction<Key>) => {
             state.dirStack.push(action.payload)
         },
+        clearUploadProgress: (state) => {
+
+        },
+        updateUploadProgress: (state, action: PayloadAction<IUploadProgress>) => {
+            console.log('uploadProgress', action.payload)
+            const update = state.uploadProgress.findIndex(i => i.file === action.payload.file)
+            if (update != -1)
+                state.uploadProgress[update]=action.payload
+            else
+                state.uploadProgress.push(action.payload)
+        },
     },
 })
 
 export default fileSlice.reducer
 
-export const {setFiles, setCurrentDir, pushDirStack, popDirStack} = fileSlice.actions
+export const {setFiles, setCurrentDir, pushDirStack, popDirStack, updateUploadProgress} = fileSlice.actions
 
 
 export const fileState = (state: RootState) => state.fileState
