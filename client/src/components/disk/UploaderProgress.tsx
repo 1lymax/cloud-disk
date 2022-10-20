@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Key, useState} from 'react';
 import {
     Box,
     Checkbox,
@@ -63,7 +63,8 @@ const UploaderProgress = () => {
             position: 'fixed',
             bottom: 0,
             p: 1,
-            right: 10
+            right: 10,
+            zIndex: 1
         }}
         >
             <Box onClick={() => setShow(!show)}
@@ -110,6 +111,7 @@ const UploaderProgress = () => {
                                   sx={{
                                       height: showItem(file) ? 'auto' : '10px'
                                   }}
+                                  key={file.file as Key}
                         >
 							<Box
 								sx={{

@@ -53,7 +53,7 @@ const Disk = () => {
     return (
         <>
             {!dragEnter &&
-				<Box sx={{m: 2}}
+				<Box sx={{mt: 2, ml: 2, mr: 2, mb: 10}}
 					 onDragEnter={dragEnterHandler}
 					 onDragLeave={dragLeaveHandler}
 					 onDragOver={dragEnterHandler}
@@ -68,18 +68,18 @@ const Disk = () => {
 					</Stack>
                     <UploaderProgress/>
 					<Box sx={{mb: 4, m: 2,}}>
-						<Grid container sx={{display: "grid", gridTemplateColumns: "1fr 4fr repeat(4, 1fr)"}}>
+						<Grid container sx={{display: "grid", gridTemplateColumns: "1fr 4fr 2fr 1fr 1fr"}}>
 							<Grid item sx={{gridColumnStart: 2}}>
 								<Typography variant="h6">
 									Name
 								</Typography>
 							</Grid>
-							<Grid item sx={{gridColumnStart: 5, justifySelf: "center"}}>
+							<Grid item sx={{gridColumnStart: 4, justifySelf: "center"}}>
 								<Typography variant="h6">
 									Date
 								</Typography>
 							</Grid>
-							<Grid item sx={{gridColumnStart: 6, justifySelf: "center"}}>
+							<Grid item sx={{gridColumnStart: 5, justifySelf: "center"}}>
 								<Typography variant="h6">
 									Size
 								</Typography>
