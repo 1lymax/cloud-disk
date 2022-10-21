@@ -49,6 +49,17 @@ export const fileAPI = createApi({
                 body: params,
             }),
             invalidatesTags: ['File']
-        })
+        }),
+
+        deleteFile: build.mutation<IFile, Key>({
+            query: (id) => ({
+                url: `api/files?id=${id}`,
+                method: 'DELETE',
+                headers: {
+                    'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
+                },
+            }),
+            invalidatesTags: ['File']
+        }),
     })
 })

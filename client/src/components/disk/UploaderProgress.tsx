@@ -69,7 +69,6 @@ const UploaderProgress = () => {
         >
             <Box onClick={() => setShow(!show)}
                  sx={{
-
                      display: 'flex',
                      cursor: 'pointer'
                  }}>
@@ -102,23 +101,19 @@ const UploaderProgress = () => {
                         minHeight: '20px',
                         maxHeight: '300px',
                         overflowY: 'auto',
-                        overflowX: 'hidden'
+                        overflowX: 'hidden',
+                        width: '100%'
                     }}>
 
-                    {uploadProgress.map(file =>
-						<Collapse orientation='horizontal'
-                                  in={showItem(file)}
-                                  sx={{
-                                      height: showItem(file) ? 'auto' : '10px'
-                                  }}
-                                  key={file.file as Key}
-                        >
+                    {uploadProgress.map(file => showItem(file) &&
+						<Box key={file.file as Key}>
 							<Box
 								sx={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
-                                    height: '40px'
+                                    height: '40px',
+                                    width: '100%'
                                 }}
 							>
                                 {file.progress === 100 &&
@@ -130,10 +125,10 @@ const UploaderProgress = () => {
 
 							</Box>
 							<Box sx={{width: '100%'}}>
-								<LinearProgressWithLabel value={file.progress}/>
+								<LinearProgressWithLabel value={file.progress < 100 ? file.progress : 100}/>
 							</Box>
 							<Divider variant='middle' sx={{mt: 1, mb: 1}}/>
-                        </Collapse>
+                        </Box>
                     )}
                 </Box>
             </Collapse>

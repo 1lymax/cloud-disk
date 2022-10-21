@@ -27,7 +27,6 @@ const FileUploader: FC<FileUploaderProps> = ({refetch, dragEnter, dragEnterHandl
 
     const uploadButtonHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         uploadFiles(e.target.files)
-
     }
 
     const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -47,6 +46,10 @@ const FileUploader: FC<FileUploaderProps> = ({refetch, dragEnter, dragEnterHandl
                     uploadFile(formData)
                 }
             )
+    }
+
+    if (uploadSuccess) {
+        console.log('uploadSuccess')
     }
 
     useEffect(() => {

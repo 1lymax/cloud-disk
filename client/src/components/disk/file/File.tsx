@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import ShareIcon from '@mui/icons-material/Share';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -10,16 +10,25 @@ import {IFile} from "../../../models/IFile";
 import {fileDownload} from "../../../actions/fileDownload";
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
 import {popDirStack, pushDirStack, setCurrentDir} from "../../../store/reducers/FileSlice";
+import {fileAPI} from "../../../services/FileService";
+import {useSnackbar} from "notistack";
+import {getErrorMessage} from "../../../utils/getErrorMessage";
+import sizeFormat from "../../../utils/sizeFormat";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 
 interface FileProps {
     file: IFile;
+    refetch: () => void;
 }
 
-const File: FC<FileProps> = ({file}) => {
+const File: FC<FileProps> = ({file, refetch}) => {
     const dispatch = useAppDispatch()
+    const {enqueueSnackbar} = useSnackbar()
     const [actionButtonsVisible, setActionButtonsVisible] = useState(false)
     const currentDir = useAppSelector(state => state.fileState.currentDir)
+    const [deleteFile, {isLoading: deleteLoading, error: deleteError, isSuccess: deleteSuccess}] = fileAPI.useDeleteFileMutation()
+
 
     const downloadHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
@@ -27,13 +36,31 @@ const File: FC<FileProps> = ({file}) => {
     }
 
     const handleDoubleClick = () => {
-        if (currentDir === file._id) {
-            dispatch(popDirStack());
-        } else {
-            dispatch(setCurrentDir(file._id ? file._id : ''))
-            dispatch(pushDirStack(file._id));
+        if (file.type === 'dir') {
+            if (currentDir === file._id) {
+                dispatch(popDirStack());
+            } else {
+                dispatch(setCurrentDir(file._id ? file._id : ''));
+                dispatch(pushDirStack(file._id));
+            }
         }
+
     };
+
+    const deleteHandler = () => {
+        deleteFile(file._id)
+    };
+
+    useEffect(() => {
+        if (deleteError) enqueueSnackbar(getErrorMessage(deleteError), {variant: "error"});
+    }, [deleteError]);
+
+    useEffect(() => {
+        if (deleteSuccess) {
+            enqueueSnackbar('File was deleted', {variant: "success"});
+            refetch()
+        }
+    }, [deleteSuccess]);
 
     return (
         <Grid container alignItems="center" onDoubleClick={() => handleDoubleClick()}
@@ -65,9 +92,9 @@ const File: FC<FileProps> = ({file}) => {
 						<CloudDownloadIcon/>
 					</IconButton>
                 }
-                <IconButton color='secondary'>
+                <LoadingButton loading={deleteLoading} variant='text' color='secondary' onClick={deleteHandler}>
                     <DeleteForeverIcon/>
-                </IconButton>
+                </LoadingButton>
                 <IconButton color='secondary'>
                     <ShareIcon/>
                 </IconButton>
@@ -82,7 +109,7 @@ const File: FC<FileProps> = ({file}) => {
             </Grid>
             <Grid item sx={{gridColumnStart: 5, justifySelf: "center"}}>
                 <Typography variant="subtitle1">
-                    {file.size ? file.size.toString() : ''}
+                    {sizeFormat(file.size as number)}
                 </Typography>
             </Grid>
         </Grid>

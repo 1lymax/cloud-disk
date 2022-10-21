@@ -92,19 +92,20 @@ const Disk = () => {
                                 :
                                 <>
                                     {currentDir && (
-                                        <File file={{
+                                        <File refetch={refetch}
+                                            file={{
                                             name: '..',
                                             size: 0,
                                             date: '',
                                             path: '',
                                             type: 'dir',
                                             user: '',
-                                            _id: dirStack[dirStack.length - 1]
+                                            _id: dirStack[dirStack.length - 1],
                                         }}
                                         />
                                     )}
                                     {files.map(file =>
-                                        <File file={file} key={file._id}/>
+                                        <File file={file} key={file._id} refetch={refetch}/>
                                     )}
                                 </>
 

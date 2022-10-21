@@ -68,11 +68,15 @@ class FileController {
 			file.mv(path)
 
 			const type = file.name.split('.').pop()
+			let filePath = file.name
+			if (parent) {
+				filePath = parent.path + '\\' + file.name
+			}
 			const dbFile = new File({
 				name: file.name,
 				type,
 				size: file.size,
-				path: parent?.path,
+				path: filePath,
 				parent: parent?._id,
 				user: user._id
 			})
@@ -80,10 +84,47 @@ class FileController {
 			await dbFile.save()
 			await user.save()
 
-			res.json(dbFile)
+			return res.status(200).json(dbFile)
+
 		} catch (e) {
 			console.log(e)
 			return res.status(400).json({message: 'Can not upload file'})
+		}
+	}
+
+	async downloadFile(req, res) {
+		try {
+			const file = await File.findOne({_id: req.query.id, user: req.user.id})
+			const path = `${config.get('filePath')}\\${req.user.id}\\${file.path}\\${file.name}`
+			if (fs.existsSync(path)){
+				return res.download(path, file.name)
+			}
+			return res.status(400).json({message: 'Download error. File not found'})
+
+		}catch (e) {
+			console.log(e)
+			return res.status(500).json({message: 'Download failed'})
+		}
+	}
+
+	async deleteFile(req, res) {
+		try {
+			console.log()
+			const file = await File.findOne({_id: req.query.id, user: req.user.id})
+			const user = await User.findOne({_id: req.user.id})
+
+			if (!file) {
+				return res.status(400).json({message: 'File not found'})
+			}
+			fileService.deleteFile(file)
+			await file.remove()
+			user.usedSpace = user.usedSpace - file.size
+			await user.save()
+
+			return res.json({message: 'File was deleted'})
+		}catch (e) {
+			console.log(e)
+			return res.status(400).json({message: e.code==="ENOTEMPTY" ? "Directory is not empty" : "Can't delete file"})
 		}
 	}
 }
