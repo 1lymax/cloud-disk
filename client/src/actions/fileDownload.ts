@@ -5,7 +5,7 @@ import {IFile} from "../models/IFile";
 export const fileDownload = async (file: IFile) => {
     const response = await fetch(`http://localhost:5000/api/files/download?id=${file._id}`, {
         headers: {
-            Authorization: `Bearer ${LocalStorage.getItem(ACCESS_TOKEN)}`
+            authorization: `Bearer ${LocalStorage.getItem(ACCESS_TOKEN)}`
         }
     })
     if (response.status === 200) {

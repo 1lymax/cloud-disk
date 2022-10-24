@@ -1,20 +1,30 @@
 import {Button} from "@mui/material";
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
+import SyncIcon from '@mui/icons-material/Sync';
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 import ModalCreateDir from "../UI/ModalCreateDir";
 import {popDirStack} from "../../store/reducers/FileSlice";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import LoadingButton from "@mui/lab/LoadingButton";
 
-const DiskButtons = () => {
+interface DiskButtonsProps {
+    refetch: () => void;
+    isLoading: boolean;
+}
+
+const DiskButtons: FC <DiskButtonsProps> = ({refetch, isLoading}) => {
     const dispatch = useAppDispatch()
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const currentDir = useAppSelector(state => state.fileState.currentDir)
 
+
     const handleBackButton = () => {
         dispatch(popDirStack())
     };
+
+    console.log(isLoading)
 
     return (
         <>
@@ -36,7 +46,16 @@ const DiskButtons = () => {
             >
                 Create Dir
             </Button>
+            <LoadingButton loading={isLoading} size="large"
+                    startIcon={<SyncIcon/>}
+                    variant="text"
+                    sx={{textTransform: "none"}}
+                    onClick={() => refetch()}
+            >
+                Refresh
+            </LoadingButton>
             <ModalCreateDir currentDir={currentDir} open={modalOpen} setOpen={setModalOpen}/>
+
         </>
     );
 };

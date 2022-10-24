@@ -4,20 +4,28 @@ import {LocalStorage} from "ts-localstorage";
 import {ACCESS_TOKEN} from "../utils/consts";
 import {Key} from "react";
 
+interface IGetFiles {
+    dirid?: Key;
+    sort?: String,
+    search?: String
+}
+
 export const fileAPI = createApi({
     reducerPath: 'fileAPI',
     baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/'}),
     tagTypes: ['File'],
     endpoints: (build) => ({
         
-        getFiles: build.query<IFileApiAnswer, Key>({
-            query: (dirid:Key ) => ({
+        getFiles: build.query<IFileApiAnswer, IGetFiles>({
+            query: (args) => ({
                 url: `api/files`,
                 method: 'GET',
                 headers: {
                     'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
                 },
-                params: dirid ? {parent: dirid} : {}
+                params: Object.fromEntries(Object.entries(args).filter(([_, v]) => v != ''))
+
+
             }),
             providesTags: ['File']
 

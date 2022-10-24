@@ -14,6 +14,7 @@ interface FileState {
     dirStack: Key[];
     uploadProgress: IUploadProgress[];
     currentDir: Key;
+    searchName: String
 }
 
 const initialState: FileState = {
@@ -21,6 +22,7 @@ const initialState: FileState = {
     dirStack: [],
     uploadProgress: [],
     currentDir: '',
+    searchName: ''
 }
 
 export const fileSlice = createSlice({
@@ -49,12 +51,15 @@ export const fileSlice = createSlice({
             else
                 state.uploadProgress.push(action.payload)
         },
+        setSearchName: (state, action: PayloadAction<String>) => {
+            state.searchName = action.payload
+        },
     },
 })
 
 export default fileSlice.reducer
 
-export const {setFiles, setCurrentDir, pushDirStack, popDirStack, updateUploadProgress} = fileSlice.actions
+export const {setFiles, setCurrentDir, pushDirStack, popDirStack, updateUploadProgress, setSearchName} = fileSlice.actions
 
 
 export const fileState = (state: RootState) => state.fileState

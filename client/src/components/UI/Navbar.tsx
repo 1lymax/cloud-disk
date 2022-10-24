@@ -7,6 +7,7 @@ import {LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
 import {useNavigate} from "react-router-dom";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import Search from "./Search";
 
 
 const Navbar = () => {
@@ -34,7 +35,14 @@ const Navbar = () => {
 
                     {isAuth
                         ?
-                        <AccountMenu/>
+                        <>
+                            <Search/>
+                            <Divider orientation="vertical" variant="middle"
+                            sx={{ml: 3, mr: 3}}
+                            />
+                            <AccountMenu/>
+                        </>
+
                         :
                         <>
                         <Button color="inherit"

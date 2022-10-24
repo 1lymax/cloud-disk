@@ -1,6 +1,6 @@
 import {useSnackbar} from "notistack";
 import React, {useEffect, useState} from 'react';
-import {Box, Grid, Stack, Typography} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
 
 import File from "./file/File";
 import DiskButtons from "./DiskButtons";
@@ -15,11 +15,13 @@ import UploaderProgress from "./UploaderProgress";
 const Disk = () => {
     const dispatch = useAppDispatch()
     const {enqueueSnackbar} = useSnackbar()
+    const [sort, setSort] = useState('');
     const [dragEnter, setDragEnter] = useState(false);
     const files = useAppSelector(state => state.fileState.files)
     const dirStack = useAppSelector(state => state.fileState.dirStack)
     const currentDir = useAppSelector(state => state.fileState.currentDir)
-    const {data, isSuccess, isLoading, error, refetch} = fileAPI.useGetFilesQuery(currentDir)
+    const search = useAppSelector(state => state.fileState.searchName)
+    const {data, isSuccess, isLoading, error, refetch} = fileAPI.useGetFilesQuery({dirid: currentDir, sort, search})
 
     const dragEnterHandler = (e: React.DragEvent) => {
         e.preventDefault()
@@ -38,6 +40,10 @@ const Disk = () => {
     }, [isSuccess, data]);
 
     useEffect(() => {
+        refetch()
+    }, [sort]);
+
+    useEffect(() => {
         const backDirId = dirStack.length ? dirStack[dirStack.length - 1] : ''
         dispatch(setCurrentDir(backDirId));
     }, [dirStack]);
@@ -47,26 +53,44 @@ const Disk = () => {
     }, [error]);
 
     if (dragEnter) return <FileUploader refetch={refetch}
-                                 dragEnter={dragEnter}
-                                 dragLeaveHandler={dragLeaveHandler}
-                                 dragEnterHandler={dragEnterHandler}/>
+                                        dragEnter={dragEnter}
+                                        dragLeaveHandler={dragLeaveHandler}
+                                        dragEnterHandler={dragEnterHandler}/>
     return (
         <>
             {!dragEnter &&
-				<Box sx={{mt: 2, ml: 2, mr: 2, mb: 10}}
+				<Box sx={{mt: 4, ml: 2, mr: 2, mb: 10}}
 					 onDragEnter={dragEnterHandler}
 					 onDragLeave={dragLeaveHandler}
 					 onDragOver={dragEnterHandler}
 				>
-					<Stack direction="row" alignItems="center" spacing={1}>
-						<DiskButtons/>
-						<FileUploader refetch={refetch}
-									  dragEnter={dragEnter}
-									  dragLeaveHandler={dragLeaveHandler}
-									  dragEnterHandler={dragEnterHandler}
-						/>
+					<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+						<Stack direction="row" alignItems="center" spacing={1}>
+							<DiskButtons refetch={refetch} isLoading={isLoading}/>
+							<FileUploader refetch={refetch}
+										  dragEnter={dragEnter}
+										  dragLeaveHandler={dragLeaveHandler}
+										  dragEnterHandler={dragEnterHandler}
+							/>
+						</Stack>
+						<FormControl sx={{m: 1, minWidth: 150}} size="small">
+							<InputLabel id="select-sort">Sort by...</InputLabel>
+							<Select
+								id="select-sort"
+								label="Sort by..."
+								value={sort}
+								onChange={(e) => setSort(e.target.value)}
+							>
+								<MenuItem value="">
+									<em>None</em>
+								</MenuItem>
+								<MenuItem value='name'>Name</MenuItem>
+								<MenuItem value='type'>Type</MenuItem>
+								<MenuItem value='date'>Date</MenuItem>
+							</Select>
+						</FormControl>
 					</Stack>
-                    <UploaderProgress/>
+					<UploaderProgress/>
 					<Box sx={{mb: 4, m: 2,}}>
 						<Grid container sx={{display: "grid", gridTemplateColumns: "1fr 4fr 2fr 1fr 1fr"}}>
 							<Grid item sx={{gridColumnStart: 2}}>
@@ -93,19 +117,27 @@ const Disk = () => {
                                 <>
                                     {currentDir && (
                                         <File refetch={refetch}
-                                            file={{
-                                            name: '..',
-                                            size: 0,
-                                            date: '',
-                                            path: '',
-                                            type: 'dir',
-                                            user: '',
-                                            _id: dirStack[dirStack.length - 1],
-                                        }}
+                                              file={{
+                                                  name: '..',
+                                                  size: 0,
+                                                  date: '',
+                                                  path: '',
+                                                  type: 'dir',
+                                                  user: '',
+                                                  _id: dirStack[dirStack.length - 1],
+                                              }}
                                         />
                                     )}
+                                    {files.length === 0 &&
+										<Box sx={{width: '100%', height: '50px',
+                                            display: 'flex',
+                                            justifyContent: 'center', alignItems: 'center'
+                                        }}>
+                                            <Typography variant={'h5'}>File not found</Typography>
+                                        </Box>
+                                    }
                                     {files.map(file =>
-                                        <File file={file} key={file._id} refetch={refetch}/>
+                                        <File file={file} refetch={refetch}/>
                                     )}
                                 </>
 
