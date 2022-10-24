@@ -1,10 +1,11 @@
 import axios, {AxiosError} from 'axios'
 import {useMutation} from 'react-query'
 import {LocalStorage} from "ts-localstorage";
-import {ACCESS_TOKEN} from "../utils/consts";
-import {useAppDispatch} from "./hooks";
-import {updateUploadProgress} from "../store/reducers/FileSlice";
+
 import {IFile} from "../models/IFile";
+import {useAppDispatch} from "./hooks";
+import {ACCESS_TOKEN} from "../utils/consts";
+import {updateUploadProgress} from "../store/reducers/FileSlice";
 
 
 export const useFileUploadMutation = () => {

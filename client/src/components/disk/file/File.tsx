@@ -1,5 +1,7 @@
-import React, {FC, useEffect, useState} from 'react';
+import {useSnackbar} from "notistack";
 import ShareIcon from '@mui/icons-material/Share';
+import LoadingButton from "@mui/lab/LoadingButton";
+import React, {FC, useEffect, useState} from 'react';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
@@ -7,14 +9,12 @@ import {Grid, IconButton, Tooltip, Typography} from "@mui/material";
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 
 import {IFile} from "../../../models/IFile";
+import sizeFormat from "../../../utils/sizeFormat";
+import {fileAPI} from "../../../services/FileService";
 import {fileDownload} from "../../../actions/fileDownload";
+import {getErrorMessage} from "../../../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
 import {popDirStack, pushDirStack, setCurrentDir} from "../../../store/reducers/FileSlice";
-import {fileAPI} from "../../../services/FileService";
-import {useSnackbar} from "notistack";
-import {getErrorMessage} from "../../../utils/getErrorMessage";
-import sizeFormat from "../../../utils/sizeFormat";
-import LoadingButton from "@mui/lab/LoadingButton";
 
 
 interface FileProps {

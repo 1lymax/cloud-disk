@@ -5,9 +5,10 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 import ModalCreateDir from "../UI/ModalCreateDir";
+import LoadingButton from "@mui/lab/LoadingButton";
 import {popDirStack} from "../../store/reducers/FileSlice";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
-import LoadingButton from "@mui/lab/LoadingButton";
+
 
 interface DiskButtonsProps {
     refetch: () => void;

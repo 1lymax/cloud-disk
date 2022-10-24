@@ -1,7 +1,8 @@
+import {createSlice} from "@reduxjs/toolkit";
+import {LocalStorage} from "ts-localstorage";
+
 import {RootState} from "../store";
 import {IUser} from "../../models/IUser";
-import {LocalStorage} from "ts-localstorage";
-import {createSlice} from "@reduxjs/toolkit";
 import {ACCESS_TOKEN} from "../../utils/consts";
 
 

@@ -1,9 +1,11 @@
 import React from 'react';
+import {Provider} from "react-redux";
 import {createRoot} from 'react-dom/client';
+import {SnackbarProvider} from "notistack";
+
 import App from './App';
 import {setupStore} from "./store/store";
-import {Provider} from "react-redux";
-import {SnackbarProvider} from "notistack";
+
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

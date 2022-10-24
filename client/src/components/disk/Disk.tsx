@@ -5,11 +5,11 @@ import {Box, FormControl, Grid, InputLabel, MenuItem, Select, Stack, Typography}
 import File from "./file/File";
 import DiskButtons from "./DiskButtons";
 import FileUploader from "./FileUploader";
+import UploaderProgress from "./UploaderProgress";
 import {fileAPI} from "../../services/FileService";
 import {getErrorMessage} from "../../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {setCurrentDir, setFiles} from "../../store/reducers/FileSlice";
-import UploaderProgress from "./UploaderProgress";
 
 
 const Disk = () => {

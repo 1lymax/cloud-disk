@@ -1,6 +1,8 @@
 import {LocalStorage} from "ts-localstorage";
-import {ACCESS_TOKEN} from "../utils/consts";
+
 import {IFile} from "../models/IFile";
+import {ACCESS_TOKEN} from "../utils/consts";
+
 
 export const fileDownload = async (file: IFile) => {
     const response = await fetch(`http://localhost:5000/api/files/download?id=${file._id}`, {

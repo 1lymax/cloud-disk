@@ -8,6 +8,7 @@ import {useAppSelector} from "../../hooks/hooks";
 import {getErrorMessage} from "../../utils/getErrorMessage";
 import {useFileUploadMutation} from "../../hooks/useFileUploadMutation";
 
+
 interface FileUploaderProps {
     refetch: () => void;
     dragEnterHandler: (e: React.DragEvent) => void;

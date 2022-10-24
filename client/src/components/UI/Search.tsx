@@ -6,6 +6,7 @@ import {useAppDispatch} from "../../hooks/hooks";
 import {useDebounce} from "../../hooks/useDebounce";
 import {setSearchName} from "../../store/reducers/FileSlice";
 
+
 const Search: FC = () => {
     const dispatch = useAppDispatch()
     const [search, setSearch] = useState('');

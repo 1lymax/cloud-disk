@@ -2,13 +2,14 @@ import {FC, useEffect} from "react";
 import {useSnackbar} from "notistack";
 import {Route, Routes} from 'react-router-dom'
 
+import Disk from "./disk/Disk";
+import Main from "../Pages/Main";
 import {userAPI} from "../services/UserService";
 import {authRoutes, publicRoutes} from "../utils/routes";
 import {getErrorMessage} from "../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import {setAuth, setCurrentUser} from "../store/reducers/UserSlice";
-import Disk from "./disk/Disk";
-import Main from "../Pages/Main";
+
 
 const AppRouter: FC = () => {
 

@@ -1,4 +1,3 @@
-import React, {Key, useState} from 'react';
 import {
     Box,
     Checkbox,
@@ -9,12 +8,14 @@ import {
     LinearProgressProps,
     Typography
 } from "@mui/material";
-
-import {useAppSelector} from "../../hooks/hooks";
+import React, {Key, useState} from 'react';
+import DoneIcon from '@mui/icons-material/Done';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import DoneIcon from '@mui/icons-material/Done';
+
+import {useAppSelector} from "../../hooks/hooks";
 import {IUploadProgress} from "../../store/reducers/FileSlice";
+
 
 const UploaderProgress = () => {
     const [show, setShow] = useState(false);

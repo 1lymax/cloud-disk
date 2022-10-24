@@ -1,8 +1,10 @@
+import {Key} from "react";
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {IFile, IFileApiAnswer, IFileCreate} from "../models/IFile";
+
 import {LocalStorage} from "ts-localstorage";
 import {ACCESS_TOKEN} from "../utils/consts";
-import {Key} from "react";
+import {IFile, IFileApiAnswer, IFileCreate} from "../models/IFile";
+
 
 interface IGetFiles {
     parent?: Key;

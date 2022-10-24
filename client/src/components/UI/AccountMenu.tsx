@@ -5,6 +5,7 @@ import {Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui
 import {logout} from "../../store/reducers/UserSlice";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 
+
 const AccountMenu: FC = () => {
     const dispatch = useAppDispatch()
     const {enqueueSnackbar} = useSnackbar()
