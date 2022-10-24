@@ -19,9 +19,9 @@ const Disk = () => {
     const [dragEnter, setDragEnter] = useState(false);
     const files = useAppSelector(state => state.fileState.files)
     const dirStack = useAppSelector(state => state.fileState.dirStack)
-    const currentDir = useAppSelector(state => state.fileState.currentDir)
+    const parent = useAppSelector(state => state.fileState.currentDir)
     const search = useAppSelector(state => state.fileState.searchName)
-    const {data, isSuccess, isLoading, error, refetch} = fileAPI.useGetFilesQuery({dirid: currentDir, sort, search})
+    const {data, isSuccess, isLoading, error, refetch} = fileAPI.useGetFilesQuery({parent, sort, search})
 
     const dragEnterHandler = (e: React.DragEvent) => {
         e.preventDefault()
@@ -41,7 +41,7 @@ const Disk = () => {
 
     useEffect(() => {
         refetch()
-    }, [sort]);
+    }, [sort, parent]);
 
     useEffect(() => {
         const backDirId = dirStack.length ? dirStack[dirStack.length - 1] : ''
@@ -115,7 +115,7 @@ const Disk = () => {
                                 <div>Loading Files...</div>
                                 :
                                 <>
-                                    {currentDir && (
+                                    {parent && (
                                         <File refetch={refetch}
                                               file={{
                                                   name: '..',

@@ -1,8 +1,9 @@
-const fileService = require('../services/fileService')
-const config = require('config')
 const fs = require('fs')
+const config = require('config')
+
 const File = require('../models/File')
 const User = require('../models/User')
+const fileService = require('../services/fileService')
 
 class FileController {
 	async createDir(req, res) {
@@ -32,25 +33,28 @@ class FileController {
 	}
 
 	async getFiles(req, res) {
-		const {sort} = req.query
-		let files=''
-		switch (sort) {
-			case 'name':
-				files = await File.find({user: req.user.id, parent: req.query.parent}).sort({name:1})
-				break
-			case 'type':
-				files = await File.find({user: req.user.id, parent: req.query.parent}).sort({type:1})
-				break
-			case 'date':
-				files = await File.find({user: req.user.id, parent: req.query.parent}).sort({date:1})
-				break
-			default:
-				files = await File.find({user: req.user.id, parent: req.query.parent})
-		}
-
+		const {sort, search, parent} = req.query
+		let files = ''
 		try {
-			return res.json({files})
+			switch (sort) {
+				case 'name':
+					files = await File.find({user: req.user.id, parent}).sort({name: 1})
+					break
+				case 'type':
+					files = await File.find({user: req.user.id, parent}).sort({type: 1})
+					break
+				case 'date':
+					files = await File.find({user: req.user.id, parent}).sort({date: 1})
+					break
+				default:
+					files = await File.find({user: req.user.id, parent})
+			}
 
+			if (search) {
+				files = files.filter(file => file.name.includes(search));
+			}
+
+			return res.json({files})
 		} catch (e) {
 			console.log(e)
 			return res.status(500).json({message: 'Can not get files'})
@@ -112,12 +116,12 @@ class FileController {
 			const file = await File.findOne({_id: req.query.id, user: req.user.id})
 			const path = `${config.get('filePath')}\\${req.user.id}\\${file.path}`
 
-			if (fs.existsSync(path)){
+			if (fs.existsSync(path)) {
 				return res.download(path, file.name)
 			}
 			return res.status(400).json({message: 'Download error. File not found'})
 
-		}catch (e) {
+		} catch (e) {
 			console.log(e)
 			return res.status(500).json({message: 'Download failed'})
 		}
@@ -138,21 +142,17 @@ class FileController {
 			await user.save()
 
 			return res.json({message: 'File was deleted'})
-		}catch (e) {
+		} catch (e) {
 			console.log(e)
-			return res.status(400).json({message: e.code==="ENOTEMPTY" ? "Directory is not empty" : "Can't delete file"})
+			return res.status(400).json({message: e.code === "ENOTEMPTY" ? "Directory is not empty" : "Can't delete file"})
 		}
 	}
 
 	async searchFile(req, res) {
 		try {
-			const searchName = req.query.search
-			console.log(searchName)
-			let files = await File.find({user: req.user.id})
-			files = files.filter(file => file.name.includes(searchName))
-			return res.json({files})
 
-		}catch (e) {
+
+		} catch (e) {
 			return res.status(400).json({message: "Search error"})
 		}
 

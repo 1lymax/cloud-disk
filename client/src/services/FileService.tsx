@@ -5,7 +5,7 @@ import {ACCESS_TOKEN} from "../utils/consts";
 import {Key} from "react";
 
 interface IGetFiles {
-    dirid?: Key;
+    parent?: Key;
     sort?: String,
     search?: String
 }

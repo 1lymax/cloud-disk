@@ -1,7 +1,8 @@
-import {RootState} from "../store";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IFile} from "../../models/IFile";
 import {Key} from "react";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+
+import {RootState} from "../store";
+import {IFile} from "../../models/IFile";
 
 
 export interface IUploadProgress {

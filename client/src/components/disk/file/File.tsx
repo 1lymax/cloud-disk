@@ -35,7 +35,7 @@ const File: FC<FileProps> = ({file, refetch}) => {
         fileDownload(file)
     }
 
-    const handleDoubleClick = () => {
+    const handleClick = () => {
         if (file.type === 'dir') {
             if (currentDir === file._id) {
                 dispatch(popDirStack());
@@ -63,8 +63,8 @@ const File: FC<FileProps> = ({file, refetch}) => {
     }, [deleteSuccess]);
 
     return (
-        <Grid container alignItems="center" onDoubleClick={() => handleDoubleClick()}
-              sx={{display: "grid", gridTemplateColumns: "1fr 4fr 2fr 1fr 1fr", minHeight: '40px'}}
+        <Grid container alignItems="center" onClick={() => handleClick()}
+              sx={{display: "grid", gridTemplateColumns: "1fr 4fr 2fr 1fr 1fr", minHeight: '40px', cursor: 'pointer'}}
               onMouseEnter={() => setActionButtonsVisible(true)}
               onMouseLeave={() => setActionButtonsVisible(false)}
         >

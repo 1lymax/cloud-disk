@@ -1,12 +1,20 @@
-import React, {FC} from 'react';
-import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
-import {IconButton, InputBase, Paper} from "@mui/material";
-import {setSearchName} from "../../store/reducers/FileSlice";
 import SearchIcon from '@mui/icons-material/Search';
+import React, {FC, useEffect, useState} from 'react';
+import {IconButton, InputBase, Paper} from "@mui/material";
+
+import {useAppDispatch} from "../../hooks/hooks";
+import {useDebounce} from "../../hooks/useDebounce";
+import {setSearchName} from "../../store/reducers/FileSlice";
 
 const Search: FC = () => {
     const dispatch = useAppDispatch()
-    const search = useAppSelector(state => state.fileState.searchName)
+    const [search, setSearch] = useState('');
+
+    useEffect(
+        useDebounce(
+            () => dispatch(setSearchName(search)),
+            500),
+        [search])
 
     return (
         <Paper elevation={0}
@@ -20,7 +28,7 @@ const Search: FC = () => {
             </IconButton>
             <InputBase
                 value={search}
-                onChange={(e)=>dispatch(setSearchName(e.target.value))}
+                onChange={(e)=>setSearch(e.target.value)}
                 sx={{ ml: 1, flex: 1, color: 'white' }}
                 placeholder="Search..."
             />

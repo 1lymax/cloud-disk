@@ -1,13 +1,14 @@
 import React from 'react';
-import {AppBar, Box, Button, Divider, IconButton, Toolbar, Typography} from "@mui/material";
-import CloudCircleIcon from '@mui/icons-material/CloudCircle';
-import {useAppSelector} from "../../hooks/hooks";
-import AccountMenu from "./AccountMenu";
-import {LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
 import {useNavigate} from "react-router-dom";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import CloudCircleIcon from '@mui/icons-material/CloudCircle';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import {AppBar, Box, Button, Divider, IconButton, Toolbar, Typography} from "@mui/material";
+
 import Search from "./Search";
+import AccountMenu from "./AccountMenu";
+import {useAppSelector} from "../../hooks/hooks";
+import {LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
 
 
 const Navbar = () => {
