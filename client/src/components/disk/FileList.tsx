@@ -24,6 +24,7 @@ const FileList: FC<FileListProps> = ({files, refetch, parent}) => {
 
     return (
         <>
+            <div className={fileView === 'list' ? classes.list__wrapper: classes.plate__wrapper}>
             {parent && <File refetch={refetch} file={emptyFile}/>}
 
             {files.length === 0 &&
@@ -31,7 +32,6 @@ const FileList: FC<FileListProps> = ({files, refetch, parent}) => {
 					<Typography variant={'h5'}>File not found</Typography>
 				</div>
             }
-            <div className={fileView === 'list' ? classes.list__wrapper: classes.plate__wrapper}>
             {files.map(file =>
                 <File file={file} refetch={refetch} key={file._id}/>
             )}

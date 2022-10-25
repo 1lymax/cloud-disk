@@ -55,12 +55,15 @@
 .plate {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   width: 180px;
   height: 250px;
+  margin-inline: 5px;
 
   &__wrapper {
     width: 100%;
     display: flex;
+    align-items: start;
     flex-wrap: wrap;
   }
 
@@ -80,6 +83,9 @@
   &__name {
     display: flex;
     justify-content: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   &__date {
