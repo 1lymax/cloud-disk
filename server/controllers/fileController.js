@@ -1,5 +1,6 @@
 const fs = require('fs')
 const config = require('config')
+const Uuid = require('uuid')
 
 const File = require('../models/File')
 const User = require('../models/User')
@@ -148,15 +149,42 @@ class FileController {
 		}
 	}
 
-	async searchFile(req, res) {
+	async uploadAvatar(req, res) {
 		try {
-
+			const file = req.files.file
+			const user = await User.findById(req.user.id)
+			if (user.avatar)
+				fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+			const avatarName = Uuid.v4() + '.jpg'
+			file.mv(config.get('staticPath') + '\\' + avatarName)
+			user.avatar = avatarName
+			await user.save()
+			return res.json(user)
 
 		} catch (e) {
-			return res.status(400).json({message: "Search error"})
+			console.log(e)
+			return res.status(400).json({message: "Upload error"})
 		}
 
 	}
+	async deleteAvatar(req, res) {
+		try {
+			const user = await User.findById(req.user.id)
+			if (!user.avatar)
+				return res.status(400).json({message: 'You have not uploaded avatar'})
+			fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+			user.avatar = null
+			await user.save()
+			return res.json(user)
+
+		} catch (e) {
+			console.log(e)
+			return res.status(400).json({message: "Delete avatar error"})
+		}
+
+	}
+
+
 }
 
 module.exports = new FileController()

@@ -15,6 +15,7 @@ interface DiskButtonsProps {
     isLoading: boolean;
 }
 
+
 const DiskButtons: FC <DiskButtonsProps> = ({refetch, isLoading}) => {
     const dispatch = useAppDispatch()
     const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -24,8 +25,6 @@ const DiskButtons: FC <DiskButtonsProps> = ({refetch, isLoading}) => {
     const handleBackButton = () => {
         dispatch(popDirStack())
     };
-
-    console.log(isLoading)
 
     return (
         <>

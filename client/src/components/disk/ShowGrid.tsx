@@ -17,10 +17,9 @@ const ShowGrid: FC<ShowGridProps> = ({cells}) => {
     return (
         <Grid container sx={{display: "grid", gridTemplateColumns: "1fr 4fr 2fr 1fr 1fr"}}>
             {cells.map((cell, index) =>
-                <Grid item sx={{gridColumnStart: `${index+1}`, height: '40px', alignItems: 'center', ...sxProps[index]}}>
+                <Grid key={index} item sx={{gridColumnStart: `${index+1}`, height: '40px', alignItems: 'center', ...sxProps[index]}}>
                     {cell}
                 </Grid>
-
             )}
         </Grid>
     );

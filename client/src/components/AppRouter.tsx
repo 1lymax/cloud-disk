@@ -42,7 +42,7 @@ const AppRouter: FC = () => {
                 <div>Loading...</div>
                 :
                 <Routes>
-                    {isSuccess &&
+                    {isAuth &&
                         authRoutes.map(({path, Component}) =>
                         <Route key={path} path={path} element={<Component/>}/>
                     )

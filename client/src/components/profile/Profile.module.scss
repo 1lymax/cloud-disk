@@ -1,0 +1,37 @@
+.profile {
+  margin: 30px;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  flex-direction: column;
+
+  &__header {
+    margin-bottom: 30px;
+  }
+
+  &__content {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+
+  }
+
+  &__item {
+    display: flex;
+    width: 300px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__itemTitle {
+    font-size: 1.3rem;
+  }
+
+  &__avatar {
+    display: flex;
+    align-items: center;
+
+    &__actions {
+    }
+  }
+}

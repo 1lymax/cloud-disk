@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
+import {API_URL} from "../config";
 import {ACCESS_TOKEN} from "../utils/consts";
 import {LocalStorage} from "ts-localstorage";
 import {IUser, UserAuthAnswer, UserAuthQuery} from "../models/IUser";
@@ -7,7 +8,7 @@ import {IUser, UserAuthAnswer, UserAuthQuery} from "../models/IUser";
 
 export const userAPI = createApi({
     reducerPath: 'userAPI',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/'}),
+    baseQuery: fetchBaseQuery({baseUrl: API_URL}),
     endpoints: (build) => ({
         login: build.mutation<UserAuthAnswer, UserAuthQuery>({
             query: (query) => ({
@@ -34,20 +35,25 @@ export const userAPI = createApi({
             }),
 
         }),
-        // updatePost: build.mutation<IPost, IPost>({
-        //     query: (post) => ({
-        //         url: `posts/${post.id}`,
-        //         method: 'PUT',
-        //         body: post
-        //     }),
-        //     invalidatesTags: ['Post']
-        // }),
-        // deletePost: build.mutation<IPost, IPost>({
-        //     query: (post) => ({
-        //         url: `posts/${post.id}`,
-        //         method: 'DELETE',
-        //     }),
-        //     invalidatesTags: ['Post']
-        // })
+        uploadAvatar: build.mutation<IUser, any>({
+            query: (params) => ({
+                url: 'api/files/upload/avatar',
+                method: 'POST',
+                headers: {
+                    'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
+                },
+                body: params,
+            }),
+        }),
+
+        deleteAvatar: build.mutation<IUser, undefined>({
+            query: () => ({
+                url: `api/files/avatar`,
+                method: 'DELETE',
+                headers: {
+                    'authorization': 'Bearer '+ LocalStorage.getItem(ACCESS_TOKEN),
+                },
+            }),
+        }),
     })
 })

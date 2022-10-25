@@ -11,6 +11,7 @@ const PORT = config.get('serverPort')
 
 app.use(fileupload({}))
 app.use(cors())
+app.use(express.static('static'))
 app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)

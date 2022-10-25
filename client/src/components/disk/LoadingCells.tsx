@@ -16,7 +16,9 @@ const LoadingCells = () => {
 
     return (
         <>
-            {loadingCells.map(cells => <ShowGrid cells={cells}/>)}
+            {loadingCells.map((cells, index) =>
+                <ShowGrid key={index} cells={cells}/>
+            )}
         </>
     );
 };

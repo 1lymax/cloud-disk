@@ -1,21 +1,31 @@
 import React, {FC} from 'react';
 import {useSnackbar} from "notistack";
-import {Avatar, Box, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
+import FilterDramaIcon from '@mui/icons-material/FilterDrama';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import {Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 
+import {API_URL} from "../../config";
 import {logout} from "../../store/reducers/UserSlice";
+import {DISK_ROUTE, PROFILE_ROUTE} from "../../utils/consts";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 
 
 const AccountMenu: FC = () => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const {enqueueSnackbar} = useSnackbar()
-    const [isOpen, setIsOpen] = React.useState<null | HTMLElement>(null)
     const user = useAppSelector(state => state.userState.currentUser)
+    const [isOpen, setIsOpen] = React.useState<null | HTMLElement>(null)
+
     const settings = [
-        // 'Profile',
+        {icon: <ManageAccountsIcon/>, title: 'Profile', handler: () => navigate(PROFILE_ROUTE)},
+        {icon: <FilterDramaIcon/>, title: 'My disk', handler: () => navigate(DISK_ROUTE)},
+        {icon: <></>, title: 'Divider', handler: undefined},
         // 'Account',
         // 'Dashboard',
-        {title: 'Logout', handler: () => handleLogout()}
+        {icon: <LogoutIcon/>, title: 'Logout', handler: () => handleLogout()}
     ];
 
 
@@ -33,14 +43,13 @@ const AccountMenu: FC = () => {
     };
 
     return (
-        <Box sx={{ display: "flex", alignItems: "center"}}>
+        <Box sx={{display: "flex", alignItems: "center"}}>
             <Typography variant="h6" component="div" sx={{flexGrow: 1, m: 1}}>
                 {user.email.split("@")[0]}
             </Typography>
             <Tooltip title="Open settings">
-
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                    <Avatar alt={user.email.toUpperCase()} src="/static/images/avatar/2.jpg"/>
+                    <Avatar alt={user.email.toUpperCase()} src={API_URL + user?.avatar}/>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -60,8 +69,17 @@ const AccountMenu: FC = () => {
                 onClose={handleCloseUserMenu}
             >
                 {settings.map((setting) => (
-                    <MenuItem key={setting.title} onClick={setting.handler}>
-                        <Typography textAlign="center">{setting.title}</Typography>
+                    <MenuItem key={setting.title} onClick={setting.handler} onClickCapture={handleCloseUserMenu}>
+                        {setting.title === 'Divider'
+                            ? <Divider/>
+                            : <>
+                                <ListItemIcon>
+                                    {setting.icon}
+                                </ListItemIcon>
+                                <Typography textAlign="center">{setting.title}</Typography>
+                            </>
+                        }
+
                     </MenuItem>
                 ))}
             </Menu>
