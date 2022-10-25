@@ -15,7 +15,9 @@ interface FileState {
     dirStack: Key[];
     uploadProgress: IUploadProgress[];
     currentDir: Key;
-    searchName: String
+    searchName: String;
+    fileView: String;
+    sort: String;
 }
 
 const initialState: FileState = {
@@ -23,7 +25,9 @@ const initialState: FileState = {
     dirStack: [],
     uploadProgress: [],
     currentDir: '',
-    searchName: ''
+    searchName: '',
+    fileView: 'list',
+    sort: ''
 }
 
 export const fileSlice = createSlice({
@@ -48,19 +52,34 @@ export const fileSlice = createSlice({
         updateUploadProgress: (state, action: PayloadAction<IUploadProgress>) => {
             const update = state.uploadProgress.findIndex(i => i.file === action.payload.file)
             if (update !== -1)
-                state.uploadProgress[update]=action.payload
+                state.uploadProgress[update] = action.payload
             else
                 state.uploadProgress.push(action.payload)
         },
         setSearchName: (state, action: PayloadAction<String>) => {
             state.searchName = action.payload
         },
+        setFileView: (state, action: PayloadAction<String>) => {
+            state.fileView = action.payload
+        },
+        setSort: (state, action: PayloadAction<String>) => {
+            state.sort = action.payload
+        },
     },
 })
 
 export default fileSlice.reducer
 
-export const {setFiles, setCurrentDir, pushDirStack, popDirStack, updateUploadProgress, setSearchName} = fileSlice.actions
+export const {
+    setFiles,
+    setCurrentDir,
+    pushDirStack,
+    popDirStack,
+    updateUploadProgress,
+    setSearchName,
+    setFileView,
+    setSort
+} = fileSlice.actions
 
 
 export const fileState = (state: RootState) => state.fileState

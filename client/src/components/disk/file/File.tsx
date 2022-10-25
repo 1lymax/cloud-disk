@@ -5,7 +5,7 @@ import React, {FC, useEffect, useState} from 'react';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import {Grid, IconButton, Tooltip, Typography} from "@mui/material";
+import {IconButton, Tooltip, Typography} from "@mui/material";
 import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
 
 import {IFile} from "../../../models/IFile";
@@ -16,6 +16,8 @@ import {getErrorMessage} from "../../../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
 import {popDirStack, pushDirStack, setCurrentDir} from "../../../store/reducers/FileSlice";
 
+import classes from './File.module.scss'
+
 
 interface FileProps {
     file: IFile;
@@ -25,10 +27,14 @@ interface FileProps {
 const File: FC<FileProps> = ({file, refetch}) => {
     const dispatch = useAppDispatch()
     const {enqueueSnackbar} = useSnackbar()
-    const [actionButtonsVisible, setActionButtonsVisible] = useState(false)
+    const fileView = useAppSelector(state => state.fileState.fileView)
     const currentDir = useAppSelector(state => state.fileState.currentDir)
-    const [deleteFile, {isLoading: deleteLoading, error: deleteError, isSuccess: deleteSuccess}] = fileAPI.useDeleteFileMutation()
-
+    const [actionButtonsVisible, setActionButtonsVisible] = useState(false)
+    const [deleteFile, {
+        isLoading: deleteLoading,
+        error: deleteError,
+        isSuccess: deleteSuccess
+    }] = fileAPI.useDeleteFileMutation()
 
     const downloadHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
@@ -62,31 +68,32 @@ const File: FC<FileProps> = ({file, refetch}) => {
         }
     }, [deleteSuccess]);
 
+
     return (
-        <Grid container alignItems="center" onClick={() => handleClick()}
-              sx={{display: "grid", gridTemplateColumns: "1fr 4fr 2fr 1fr 1fr", minHeight: '40px', cursor: 'pointer'}}
-              onMouseEnter={() => setActionButtonsVisible(true)}
-              onMouseLeave={() => setActionButtonsVisible(false)}
+        <div onClick={() => handleClick()}
+             className={fileView === 'list' ? classes.list : classes.plate}
+             onMouseEnter={() => setActionButtonsVisible(true)}
+             onMouseLeave={() => setActionButtonsVisible(false)}
         >
-            <Grid item sx={{gridColumnStart: 1, justifySelf: "center"}}>
+            <div className={fileView === 'list' ? classes.list__icon : classes.plate__icon}>
                 {file.type === "dir"
-                    ?
-                    <>
-                        {currentDir !== file._id &&
-							<FolderOpenIcon sx={{fontSize: 40}} color="primary"/>
-                        }
-                    </>
+                    ? currentDir !== file._id &&
+					<FolderOpenIcon
+						className={fileView === 'list' ? classes.list__icon__folder : classes.plate__icon__folder}
+						color="primary"/>
                     :
-                    <TextSnippetOutlinedIcon sx={{fontSize: 30}}/>}
-            </Grid>
-            <Grid item sx={{gridColumnStart: 2}}>
+                    <TextSnippetOutlinedIcon
+                        className={fileView === 'list' ? classes.list__icon__file : classes.plate__icon__file}
+                    />
+                }
+            </div>
+            <div className={fileView === 'list' ? classes.list__name : classes.plate__name}>
                 <Typography variant="subtitle1">
                     {file.name}
                 </Typography>
-            </Grid>
-            <Grid item sx={{gridColumnStart: 3, justifySelf: "right"}}
-                  hidden={!actionButtonsVisible}
-            >
+            </div>
+            <div className={fileView === 'list' ? classes.list__actions : classes.plate__actions}
+                 style={!actionButtonsVisible ? {display: 'none'} : {}}>
                 {file.type !== "dir" &&
 					<IconButton color='secondary' onClick={(e) => downloadHandler(e)}>
 						<CloudDownloadIcon/>
@@ -98,21 +105,21 @@ const File: FC<FileProps> = ({file, refetch}) => {
                 <IconButton color='secondary'>
                     <ShareIcon/>
                 </IconButton>
-            </Grid>
-            <Grid item sx={{gridColumnStart: 4, justifySelf: "center"}}>
+            </div>
+            <div className={fileView === 'list' ? classes.list__date : classes.plate__date}>
                 <Tooltip title={`${file.date.slice(4, 16)} ${file.date.slice(16, 24)}`}>
                     <Typography variant="subtitle2">
                         {file.date.slice(4, 15)}
                     </Typography>
                 </Tooltip>
 
-            </Grid>
-            <Grid item sx={{gridColumnStart: 5, justifySelf: "center"}}>
-                <Typography variant="subtitle1">
+            </div>
+            <div className={fileView === 'list' ? classes.list__size : classes.plate__size}>
+                <Typography variant="subtitle2">
                     {sizeFormat(file.size as number)}
                 </Typography>
-            </Grid>
-        </Grid>
+            </div>
+        </div>
     );
 };
 

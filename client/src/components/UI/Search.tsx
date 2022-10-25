@@ -14,7 +14,7 @@ const Search: FC = () => {
     useEffect(
         useDebounce(
             () => dispatch(setSearchName(search)),
-            500),
+            300),
         [search])
 
     return (
@@ -31,7 +31,7 @@ const Search: FC = () => {
                 value={search}
                 onChange={(e)=>setSearch(e.target.value)}
                 sx={{ ml: 1, flex: 1, color: 'white' }}
-                placeholder="Search..."
+                placeholder="Search files..."
             />
         </Paper>
     );
