@@ -1,6 +1,7 @@
 import {Key} from "react";
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 
+import {API_URL} from "../config";
 import {LocalStorage} from "ts-localstorage";
 import {ACCESS_TOKEN} from "../utils/consts";
 import {IFile, IFileApiAnswer, IFileCreate} from "../models/IFile";
@@ -14,7 +15,7 @@ interface IGetFiles {
 
 export const fileAPI = createApi({
     reducerPath: 'fileAPI',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/'}),
+    baseQuery: fetchBaseQuery({baseUrl: API_URL}),
     tagTypes: ['File'],
     endpoints: (build) => ({
         

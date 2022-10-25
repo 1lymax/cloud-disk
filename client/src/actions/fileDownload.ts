@@ -1,11 +1,12 @@
 import {LocalStorage} from "ts-localstorage";
 
+import {API_URL} from "../config";
 import {IFile} from "../models/IFile";
 import {ACCESS_TOKEN} from "../utils/consts";
 
 
 export const fileDownload = async (file: IFile) => {
-    const response = await fetch(`http://localhost:5000/api/files/download?id=${file._id}`, {
+    const response = await fetch(`${API_URL}api/files/download?id=${file._id}`, {
         headers: {
             authorization: `Bearer ${LocalStorage.getItem(ACCESS_TOKEN)}`
         }
