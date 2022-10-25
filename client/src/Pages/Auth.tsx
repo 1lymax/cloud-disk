@@ -7,9 +7,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {Avatar, Box, Grid, Link, TextField, Typography} from '@mui/material';
 
-import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import {userAPI} from "../services/UserService";
 import {getErrorMessage} from "../utils/getErrorMessage";
+import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import {setAuth, setCurrentUser} from "../store/reducers/UserSlice";
 import {ACCESS_TOKEN, DISK_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 
@@ -50,7 +50,6 @@ const Auth = () => {
 
     useEffect(() => {
         if (loginSuccess) {
-            console.log('login success')
             enqueueSnackbar("Successfully logged in", {variant: "success"});
             dispatch(setCurrentUser(loginData?.user));
             dispatch(setAuth(true))
@@ -59,7 +58,6 @@ const Auth = () => {
     }, [loginSuccess]);
 
     useEffect(() => {
-        console.log('navigate to disk')
         if (isAuth) navigate(DISK_ROUTE)
     }, [isAuth]);
 
