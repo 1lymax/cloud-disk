@@ -49,10 +49,6 @@ const FileUploader: FC<FileUploaderProps> = ({refetch, dragEnter, dragEnterHandl
             )
     }
 
-    if (uploadSuccess) {
-        console.log('uploadSuccess')
-    }
-
     useEffect(() => {
         if (uploadSuccess) {
             enqueueSnackbar('Upload success', {variant: "success"});

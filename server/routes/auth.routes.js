@@ -53,7 +53,7 @@ router.post('/login',
 			if (!isPassValid)
 				return res.status(400).json({message: "Incorrect parameters"})
 
-			const token = jwt.sign({id: user.id}, config.get('secretKey'), {expiresIn: '1h'})
+			const token = jwt.sign({id: user.id}, config.get('secretKey'), {expiresIn: '2h'})
 
 			return res.json({
 				token,

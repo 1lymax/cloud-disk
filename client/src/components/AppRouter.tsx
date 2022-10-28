@@ -3,20 +3,23 @@ import {useSnackbar} from "notistack";
 import {Route, Routes} from 'react-router-dom'
 
 import Disk from "./disk/Disk";
-import Main from "../Pages/Main";
+import Main from "../Pages/Main/Main";
 import {userAPI} from "../services/UserService";
 import {authRoutes, publicRoutes} from "../utils/routes";
 import {getErrorMessage} from "../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import {setAuth, setCurrentUser} from "../store/reducers/UserSlice";
+import {LocalStorage} from "ts-localstorage";
+import {ACCESS_TOKEN} from "../utils/consts";
 
 
 const AppRouter: FC = () => {
 
     const {enqueueSnackbar} = useSnackbar()
     const dispatch = useAppDispatch()
-    const {data, error, isSuccess, isLoading} = userAPI.useTokenQuery()
-
+    const {data, error, isSuccess, isLoading} = userAPI.useTokenQuery(undefined, {
+        skip: LocalStorage.getItem(ACCESS_TOKEN)===null
+    })
 
     useEffect(() => {
         if (isSuccess) {
@@ -30,6 +33,8 @@ const AppRouter: FC = () => {
         if (error) {
             dispatch(setAuth(false))
             enqueueSnackbar(getErrorMessage(error), {variant: "error"});
+            LocalStorage.removeItem(ACCESS_TOKEN)
+
         }
     }, [error]);
 

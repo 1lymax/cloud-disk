@@ -1,12 +1,12 @@
-export default (size: number) => {
+export default (size: number, onlyunits: boolean = false) => {
     if (size > 1024 * 1024 * 1024) {
-        return (size/(1024*1024*1024)).toFixed(1)+' Gb'
+        return onlyunits ? ' Gb' : (size/(1024*1024*1024)).toFixed(1)+' Gb'
     }
     if (size > 1024 * 1024) {
-        return (size/(1024*1024)).toFixed(1)+' Mb'
+        return onlyunits ? ' Mb' : (size/(1024*1024)).toFixed(1)+' Mb'
     }
     if (size > 1024) {
-        return (size/(1024)).toFixed(1)+' Kb'
+        return onlyunits ? ' Kb' : (size/(1024)).toFixed(1)+' Kb'
     }
-    return size+'B'
+    return onlyunits ? ' B' : size+'B'
 };

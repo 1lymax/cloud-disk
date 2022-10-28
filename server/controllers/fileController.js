@@ -1,6 +1,6 @@
 const fs = require('fs')
-const config = require('config')
 const Uuid = require('uuid')
+
 
 const File = require('../models/File')
 const User = require('../models/User')
@@ -15,9 +15,9 @@ class FileController {
 
 			if (!parentFile) {
 				file.path = name;
-				await fileService.createDir(file);
+				await fileService.createDir(req, file);
 			} else {
-				file.path = `${parentFile.path}\\${file.name}`
+				file.path = `${parentFile.path}/${file.name}`
 				await fileService.createDir(req, file)
 				parentFile.childs.push(file._id)
 				await parentFile.save()
@@ -77,9 +77,9 @@ class FileController {
 
 			let path
 			if (parent) {
-				path = `${req.filePath}\\${user._id}\\${parent.path}\\${file.name}`;
+				path = `${req.filePath}/${user._id}/${parent.path}/${file.name}`;
 			} else {
-				path = `${req.filePath}\\${user._id}\\${file.name}`;
+				path = `${req.filePath}/${user._id}/${file.name}`;
 			}
 
 			if (fs.existsSync(path)) {
@@ -90,7 +90,7 @@ class FileController {
 			const type = file.name.split('.').pop()
 			let filePath = file.name
 			if (parent) {
-				filePath = parent.path + '\\' + file.name
+				filePath = parent.path + '/' + file.name
 			}
 			const dbFile = new File({
 				name: file.name,
@@ -115,7 +115,7 @@ class FileController {
 	async downloadFile(req, res) {
 		try {
 			const file = await File.findOne({_id: req.query.id, user: req.user.id})
-			const path = `${req.filePath}\\${req.user.id}\\${file.path}`
+			const path = `${req.filePath}/${req.user.id}/${file.path}`
 
 			if (fs.existsSync(path)) {
 				return res.download(path, file.name)
@@ -154,9 +154,17 @@ class FileController {
 			const file = req.files.file
 			const user = await User.findById(req.user.id)
 			if (user.avatar)
-				fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+				if (fs.existsSync(req.staticPath + '/' + user.avatar)) {
+					fs.unlinkSync(req.staticPath + '/' + user.avatar)
+				}
 			const avatarName = Uuid.v4() + '.jpg'
-			file.mv(config.get('staticPath') + '\\' + avatarName)
+
+			if (!fs.existsSync(req.staticPath)) {
+				fs.mkdirSync(req.staticPath);
+			}
+
+			file.mv(req.staticPath + '/' + avatarName)
+
 			user.avatar = avatarName
 			await user.save()
 			return res.json(user)
@@ -167,12 +175,13 @@ class FileController {
 		}
 
 	}
+
 	async deleteAvatar(req, res) {
 		try {
 			const user = await User.findById(req.user.id)
 			if (!user.avatar)
 				return res.status(400).json({message: 'You have not uploaded avatar'})
-			fs.unlinkSync(config.get('staticPath') + '\\' + user.avatar)
+			fs.unlinkSync(req.staticPath + '/' + user.avatar)
 			user.avatar = null
 			await user.save()
 			return res.json(user)
@@ -180,6 +189,25 @@ class FileController {
 		} catch (e) {
 			console.log(e)
 			return res.status(400).json({message: "Delete avatar error"})
+		}
+
+	}
+
+	async getStatistic(req, res) {
+		const total = {}
+		try {
+			total.files = await File.aggregate([{$count: 'name'}])
+			total.users = await User.aggregate([{$count: 'name'}])
+			total.usedSpace = await User.aggregate([{
+				$group: {_id: null,
+					total: {$sum: "$usedSpace"}}
+			}])
+
+			return res.json(total)
+
+		} catch (e) {
+			console.log(e)
+			return res.status(400).json({message: "Can't get stats"})
 		}
 
 	}

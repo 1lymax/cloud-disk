@@ -2,7 +2,7 @@ import {useSnackbar} from "notistack";
 import React, {useEffect, useState} from 'react';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import {Box, IconButton, Stack, Typography} from "@mui/material";
+import {Box, IconButton, LinearProgress, Stack, Typography} from "@mui/material";
 
 import FileList from "./FileList";
 import ShowGrid from "./ShowGrid";
@@ -15,6 +15,7 @@ import {fileAPI} from "../../services/FileService";
 import {getErrorMessage} from "../../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {setCurrentDir, setFiles, setFileView} from "../../store/reducers/FileSlice";
+import sizeFormat from "../../utils/sizeFormat";
 
 
 const Disk = () => {
@@ -27,6 +28,7 @@ const Disk = () => {
     const parent = useAppSelector(state => state.fileState.currentDir)
     const search = useAppSelector(state => state.fileState.searchName)
     const fileView = useAppSelector(state => state.fileState.fileView)
+    const user = useAppSelector(state => state.userState.currentUser)
     const {data, isSuccess, isLoading, error, refetch} = fileAPI.useGetFilesQuery({parent, sort, search})
 
 
@@ -82,7 +84,10 @@ const Disk = () => {
     return (
         <>
             {!dragEnter &&
-				<Box sx={{mt: 4, ml: 2, mr: 2, mb: 10}}
+				<Box sx={{
+                    mt: 4, ml: 2, mr: 2, mb: 5,
+                    minHeight: 'calc(100vh - 220px)'
+                }}
 					 onDragEnter={dragEnterHandler}
 					 onDragLeave={dragLeaveHandler}
 					 onDragOver={dragEnterHandler}
@@ -121,6 +126,29 @@ const Disk = () => {
 					</Box>
 				</Box>
             }
+            <Box sx={{width: '300px', ml: 5}}>
+                <Box>
+                    <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                        <Box>
+                            <Typography variant={"subtitle1"}>
+                                Used {sizeFormat(user.usedSpace)} of
+                            </Typography>
+                        </Box>
+
+                        <Box>
+                            <Typography variant={"subtitle1"}>
+                                {sizeFormat(user.diskSpace)}
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
+                <LinearProgress variant="determinate" value={(user.usedSpace / user.diskSpace) * 100}/>
+                <Box sx={{display: 'flex', justifyContent: 'end', mt:1}}>
+                    <Typography variant={"subtitle2"} sx={{ cursor: 'pointer'}}>
+                    Need more space?
+                    </Typography>
+                </Box>
+            </Box>
         </>
 
     );

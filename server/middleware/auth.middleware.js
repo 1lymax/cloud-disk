@@ -15,6 +15,6 @@ module.exports = (req, res, next) => {
 		next()
 	}catch (e) {
 		console.log(e)
-		return res.status(401).json({message: 'Authorization error.'})
+		return res.status(401).json({message: 'Session expired. You need to sign in again'})
 	}
 };

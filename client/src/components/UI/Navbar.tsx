@@ -21,13 +21,12 @@ const Navbar = () => {
                 <Toolbar>
                     <Typography variant="h6"
                                 onClick={()=>navigate(MAIN_ROUTE)}
-                                component="div" sx={{flexGrow: 1}}
+                                sx={{flexGrow: 1, cursor: 'pointer'}}
                     >
                         <IconButton
-                            size="large"
+                            sx={{ fontSize: 30 }}
                             edge="start"
                             color="inherit"
-                            sx={{mr: 2}}
                         >
                             <CloudCircleIcon/>
                         </IconButton>

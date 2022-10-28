@@ -13,6 +13,18 @@ interface IGetFiles {
     search?: String
 }
 
+interface IGetStats {
+    files: [
+        { name: number }
+    ],
+    users: [
+        { name: number }
+    ],
+    usedSpace: [
+        { total: number }
+    ]
+}
+
 export const fileAPI = createApi({
     reducerPath: 'fileAPI',
     baseQuery: fetchBaseQuery({baseUrl: API_URL}),
@@ -71,6 +83,13 @@ export const fileAPI = createApi({
                 },
             }),
             invalidatesTags: ['File']
+        }),
+
+        getStats: build.query<IGetStats, undefined>({
+            query: () => ({
+                url: `api/files/stats`,
+                method: 'GET',
+            }),
         }),
     })
 })

@@ -6,6 +6,7 @@ import {IFile} from "../models/IFile";
 import {useAppDispatch} from "./hooks";
 import {ACCESS_TOKEN} from "../utils/consts";
 import {updateUploadProgress} from "../store/reducers/FileSlice";
+import {API_URL} from "../config";
 
 
 export const useFileUploadMutation = () => {
@@ -13,7 +14,7 @@ export const useFileUploadMutation = () => {
 
     const mutation = useMutation<IFile, AxiosError, any>(
         args => axios.post(
-            'http://localhost:5000/api/files/upload',
+            `${API_URL}api/files/upload`,
             args,
             {
                 headers: {

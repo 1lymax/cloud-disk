@@ -1,5 +1,5 @@
 import Auth from "../Pages/Auth";
-import Main from "../Pages/Main";
+import Main from "../Pages/Main/Main";
 import Disk from "../components/disk/Disk";
 import Profile from "../components/profile/Profile";
 import {DISK_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE} from "./consts";
