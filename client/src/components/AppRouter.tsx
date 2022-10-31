@@ -1,16 +1,16 @@
-import {FC, useEffect} from "react";
+import {FC, lazy, useEffect} from "react";
 import {useSnackbar} from "notistack";
 import {Route, Routes} from 'react-router-dom'
 
-import Disk from "./disk/Disk";
-import Main from "../Pages/Main/Main";
+import {ACCESS_TOKEN} from "../utils/consts";
+import {LocalStorage} from "ts-localstorage";
 import {userAPI} from "../services/UserService";
 import {authRoutes, publicRoutes} from "../utils/routes";
 import {getErrorMessage} from "../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../hooks/hooks";
 import {setAuth, setCurrentUser} from "../store/reducers/UserSlice";
-import {LocalStorage} from "ts-localstorage";
-import {ACCESS_TOKEN} from "../utils/consts";
+import Disk from "./disk/Disk";
+import Main from "../Pages/Main/Main";
 
 
 const AppRouter: FC = () => {
@@ -20,6 +20,9 @@ const AppRouter: FC = () => {
     const {data, error, isSuccess, isLoading} = userAPI.useTokenQuery(undefined, {
         skip: LocalStorage.getItem(ACCESS_TOKEN)===null
     })
+
+    //const LazyDisk = lazy(() => import('./disk/Disk'));
+    //const LazyMain = lazy(() => import('../Pages/Main/Main'));
 
     useEffect(() => {
         if (isSuccess) {

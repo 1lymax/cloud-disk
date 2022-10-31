@@ -52,7 +52,7 @@ class FileController {
 			}
 
 			if (search) {
-				files = files.filter(file => file.name.includes(search));
+				files = files.filter(file => file.name.toLowerCase().includes(search.toLowerCase()));
 			}
 
 			return res.json({files})

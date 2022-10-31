@@ -11,9 +11,10 @@ const SelectSort = () => {
 
     return (
         <FormControl sx={{m: 1, minWidth: 150}} size="small">
-            <InputLabel id="select-sort">Sort by...</InputLabel>
+            <InputLabel aria-label='Sort' id="select-sort">Sort by...</InputLabel>
             <Select
-                id="select-sort"
+                id="select-sorting"
+                aria-label='Select to sort'
                 label="Sort by..."
                 value={sort}
                 onChange={(e) => dispatch(setSort(e.target.value))}

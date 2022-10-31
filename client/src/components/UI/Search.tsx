@@ -24,7 +24,9 @@ const Search: FC = () => {
                 backgroundColor: 'rgba(255,255,255,0.25)', color: 'white'
             }}
         >
-            <IconButton color="inherit" sx={{ p: '10px'}}>
+            <IconButton color="inherit" sx={{ p: '10px'}}
+                aria-label='Search'
+            >
                 <SearchIcon />
             </IconButton>
             <InputBase

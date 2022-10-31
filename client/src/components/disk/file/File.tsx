@@ -89,11 +89,18 @@ const File: FC<FileProps> = ({file, refetch}) => {
             </div>
             <div className={fileView === 'list' ? classes.list__name : classes.plate__name}
                 style={file.name.length > 23 ? {justifyContent: 'left'} : {}}>
-                    <Tooltip title={file.name.length > 23 ? file.name : ''}>
+                {file.name.length > 23 && fileView === 'plate'
+                    ?
+                    <Tooltip title={file.name}>
                         <Typography variant="subtitle2">
                             {file.name}
                         </Typography>
                     </Tooltip>
+                    :
+                    <Typography variant="subtitle2">
+                        {file.name}
+                    </Typography>
+                }
             </div>
             <div className={fileView === 'list' ? classes.list__actions : classes.plate__actions}
                  style={!actionButtonsVisible ? {display: 'none'} : {}}>

@@ -10,12 +10,12 @@ import SelectSort from "./SelectSort";
 import DiskButtons from "./DiskButtons";
 import FileUploader from "./FileUploader";
 import LoadingCells from "./LoadingCells";
+import sizeFormat from "../../utils/sizeFormat";
 import UploaderProgress from "./UploaderProgress";
 import {fileAPI} from "../../services/FileService";
 import {getErrorMessage} from "../../utils/getErrorMessage";
 import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
 import {setCurrentDir, setFiles, setFileView} from "../../store/reducers/FileSlice";
-import sizeFormat from "../../utils/sizeFormat";
 
 
 const Disk = () => {
@@ -104,10 +104,14 @@ const Disk = () => {
 						<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={4}>
 							<SelectSort/>
 							<Stack direction="row" alignItems="center" justifyContent="space-between">
-								<IconButton color='primary' onClick={() => dispatch(setFileView('list'))}>
+								<IconButton color='primary' onClick={() => dispatch(setFileView('list'))}
+                                    aria-label='List'
+                                >
 									<ViewListIcon/>
 								</IconButton>
-								<IconButton color='primary' onClick={() => dispatch(setFileView('plate'))}>
+								<IconButton color='primary' onClick={() => dispatch(setFileView('plate'))}
+											aria-label='Plate'
+                                >
 									<ViewModuleIcon/>
 								</IconButton>
 							</Stack>
@@ -142,7 +146,9 @@ const Disk = () => {
                         </Box>
                     </Box>
                 </Box>
-                <LinearProgress variant="determinate" value={(user.usedSpace / user.diskSpace) * 100}/>
+                <LinearProgress variant="determinate" value={(user.usedSpace / user.diskSpace) * 100}
+                    aria-label='Used disk space'
+                />
                 <Box sx={{display: 'flex', justifyContent: 'end', mt:1}}>
                     <Typography variant={"subtitle2"} sx={{ cursor: 'pointer'}}>
                     Need more space?

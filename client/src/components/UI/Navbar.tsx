@@ -22,11 +22,13 @@ const Navbar = () => {
                     <Typography variant="h6"
                                 onClick={()=>navigate(MAIN_ROUTE)}
                                 sx={{flexGrow: 1, cursor: 'pointer'}}
+                                aria-label="Cloudisk"
                     >
                         <IconButton
                             sx={{ fontSize: 30 }}
                             edge="start"
                             color="inherit"
+                            aria-label="Cloudisk"
                         >
                             <CloudCircleIcon/>
                         </IconButton>
