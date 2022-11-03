@@ -1,4 +1,4 @@
-import {FC, lazy, useEffect} from "react";
+import {FC, useEffect} from "react";
 import {useSnackbar} from "notistack";
 import {Route, Routes} from 'react-router-dom'
 
@@ -20,9 +20,6 @@ const AppRouter: FC = () => {
     const {data, error, isSuccess, isLoading} = userAPI.useTokenQuery(undefined, {
         skip: LocalStorage.getItem(ACCESS_TOKEN)===null
     })
-
-    //const LazyDisk = lazy(() => import('./disk/Disk'));
-    //const LazyMain = lazy(() => import('../Pages/Main/Main'));
 
     useEffect(() => {
         if (isSuccess) {

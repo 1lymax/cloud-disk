@@ -63,7 +63,7 @@
   &__wrapper {
     width: 100%;
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     flex-wrap: wrap;
   }
 
@@ -98,6 +98,6 @@
 
   &__actions {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
   }
 }
