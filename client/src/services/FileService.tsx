@@ -14,15 +14,9 @@ interface IGetFiles {
 }
 
 interface IGetStats {
-    files: [
-        { name: number }
-    ],
-    users: [
-        { name: number }
-    ],
-    usedSpace: [
-        { total: number }
-    ]
+    files: number,
+    users: number,
+    usedSpace: number
 }
 
 export const fileAPI = createApi({

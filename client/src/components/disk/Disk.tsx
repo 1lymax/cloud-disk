@@ -7,7 +7,7 @@ import {Box, IconButton, LinearProgress, Stack, Typography} from "@mui/material"
 import FileList from "./FileList";
 import ShowGrid from "./ShowGrid";
 import SelectSort from "./SelectSort";
-import DiskButtons from "./DiskButtons";
+import DiskButtons from "./DiskButtons/DiskButtons";
 import FileUploader from "./FileUploader";
 import LoadingCells from "./LoadingCells";
 import sizeFormat from "../../utils/sizeFormat";
@@ -22,12 +22,14 @@ const Disk = () => {
     const dispatch = useAppDispatch()
     const {enqueueSnackbar} = useSnackbar()
     const [dragEnter, setDragEnter] = useState(false);
-    const sort = useAppSelector(state => state.fileState.sort)
-    const files = useAppSelector(state => state.fileState.files)
-    const dirStack = useAppSelector(state => state.fileState.dirStack)
-    const parent = useAppSelector(state => state.fileState.currentDir)
-    const search = useAppSelector(state => state.fileState.searchName)
-    const fileView = useAppSelector(state => state.fileState.fileView)
+    const {
+        sort,
+        files,
+        dirStack,
+        fileView,
+        currentDir: parent,
+        searchName: search
+    } = useAppSelector(state => state.fileState)
     const user = useAppSelector(state => state.userState.currentUser)
     const {data, isSuccess, isLoading, error, refetch} = fileAPI.useGetFilesQuery({parent, sort, search})
 
@@ -91,6 +93,7 @@ const Disk = () => {
 					 onDragEnter={dragEnterHandler}
 					 onDragLeave={dragLeaveHandler}
 					 onDragOver={dragEnterHandler}
+                     data-testid='disk-page'
 				>
 					<Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
 						<Stack direction="row" alignItems="center" spacing={1}>
@@ -105,13 +108,13 @@ const Disk = () => {
 							<SelectSort/>
 							<Stack direction="row" alignItems="center" justifyContent="space-between">
 								<IconButton color='primary' onClick={() => dispatch(setFileView('list'))}
-                                    aria-label='List'
-                                >
+											aria-label='List'
+								>
 									<ViewListIcon/>
 								</IconButton>
 								<IconButton color='primary' onClick={() => dispatch(setFileView('plate'))}
 											aria-label='Plate'
-                                >
+								>
 									<ViewModuleIcon/>
 								</IconButton>
 							</Stack>
@@ -147,11 +150,11 @@ const Disk = () => {
                     </Box>
                 </Box>
                 <LinearProgress variant="determinate" value={(user.usedSpace / user.diskSpace) * 100}
-                    aria-label='Used disk space'
+                                aria-label='Used disk space'
                 />
-                <Box sx={{display: 'flex', justifyContent: 'end', mt:1}}>
-                    <Typography variant={"subtitle2"} sx={{ cursor: 'pointer'}}>
-                    Need more space?
+                <Box sx={{display: 'flex', justifyContent: 'end', mt: 1}}>
+                    <Typography variant={"subtitle2"} sx={{cursor: 'pointer'}}>
+                        Need more space?
                     </Typography>
                 </Box>
             </Box>

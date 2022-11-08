@@ -7,11 +7,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {Avatar, Box, Grid, Link, TextField, Typography} from '@mui/material';
 
-import {userAPI} from "../services/UserService";
-import {getErrorMessage} from "../utils/getErrorMessage";
-import {useAppDispatch, useAppSelector} from "../hooks/hooks";
-import {setAuth, setCurrentUser} from "../store/reducers/UserSlice";
-import {ACCESS_TOKEN, DISK_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
+import {userAPI} from "../../services/UserService";
+import {getErrorMessage} from "../../utils/getErrorMessage";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import {setAuth, setCurrentUser} from "../../store/reducers/UserSlice";
+import {ACCESS_TOKEN, DISK_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "../../utils/consts";
 
 
 const Auth = () => {
@@ -70,7 +70,7 @@ const Auth = () => {
 
 
     return (
-        <Box
+        <Box data-testid='auth-page'
             sx={{
                 marginTop: 8,
                 display: 'flex',
@@ -90,6 +90,9 @@ const Auth = () => {
                     required
                     fullWidth
                     autoFocus
+                    inputProps={
+                        {"data-testid": 'login-input'}
+                    }
                     name="email"
                     margin="normal"
                     value={email}
@@ -103,6 +106,9 @@ const Auth = () => {
                     id="password"
                     margin="normal"
                     type="password"
+                    inputProps={
+                        {"data-testid": 'password-input'}
+                    }
                     name="password"
                     label="Password"
                     value={password}
@@ -117,6 +123,7 @@ const Auth = () => {
                     fullWidth
                     type="submit"
                     loading={loginLoading || regLoading}
+                    data-testid='login-btn'
                     variant="contained"
                     sx={{mt: 3, mb: 2}}
                 >
@@ -124,12 +131,12 @@ const Auth = () => {
                 </LoadingButton>
                 <Grid container>
                     <Grid item xs>
-                        <Link href="#" variant="body2">
+                        <Link href="src/Pages/Auth/Auth#" variant="body2">
                             Forgot password?
                         </Link>
                     </Grid>
                     <Grid item>
-                        <NavLink to={isLogin ? REGISTRATION_ROUTE : LOGIN_ROUTE}>
+                        <NavLink to={isLogin ? REGISTRATION_ROUTE : LOGIN_ROUTE} data-testid='registration-link'>
                             <Typography variant="body2">
                                 {isLogin ? 'Don\'t have an account? Sign up' : 'Already registered? Sign in'}
                             </Typography>

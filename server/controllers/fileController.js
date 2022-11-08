@@ -197,11 +197,15 @@ class FileController {
 		const total = {}
 		try {
 			total.files = await File.aggregate([{$count: 'name'}])
+			total.files = total.files[0].name
 			total.users = await User.aggregate([{$count: 'name'}])
+			total.users = total.users[0].name
 			total.usedSpace = await User.aggregate([{
 				$group: {_id: null,
 					total: {$sum: "$usedSpace"}}
 			}])
+			total.usedSpace = total.usedSpace[0].total
+
 
 			return res.json(total)
 

@@ -38,7 +38,7 @@ const ModalCreateDir: FC < ModalCreateDirProps > = ({open, setOpen, currentDir})
 
 
     return (
-            <Dialog fullWidth open={open} onClose={() => setOpen(false)}>
+            <Dialog fullWidth open={open} onClose={() => setOpen(false)} data-testid='modalCreateDir-dialog'>
                 <DialogTitle>Folder create
                     <IconButton
                         onClick={() => setOpen(false)}
@@ -61,18 +61,26 @@ const ModalCreateDir: FC < ModalCreateDirProps > = ({open, setOpen, currentDir})
                         margin="dense"
                         label="Folder name"
                         value={dirName}
+                        inputProps={
+                            {"data-testid": "createDir-input"}
+                        }
                         onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setDirName(e.target.value)}
                         fullWidth
                         variant="standard"
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button onClick={() => setOpen(false)}
+                        data-testid='createDir-cancel-button'
+                    >
+                        Cancel
+                    </Button>
                     <LoadingButton
                         loading={createLoading}
                         loadingPosition="start"
                         onClick={handleCreateDir}
                         startIcon={<SaveIcon/>}
+                        data-testid='createDir-submit-button'
                     >
                         Create
                     </LoadingButton>

@@ -27,8 +27,7 @@ interface FileProps {
 const File: FC<FileProps> = ({file, refetch}) => {
     const dispatch = useAppDispatch()
     const {enqueueSnackbar} = useSnackbar()
-    const fileView = useAppSelector(state => state.fileState.fileView)
-    const currentDir = useAppSelector(state => state.fileState.currentDir)
+    const {fileView, currentDir} = useAppSelector(state => state.fileState)
     const [actionButtonsVisible, setActionButtonsVisible] = useState(false)
     const [deleteFile, {
         isLoading: deleteLoading,
@@ -71,6 +70,7 @@ const File: FC<FileProps> = ({file, refetch}) => {
 
     return (
         <div onClick={() => handleClick()}
+             data-testid='file-elem'
              className={fileView === 'list' ? classes.list : classes.plate}
              onMouseEnter={() => setActionButtonsVisible(true)}
              onMouseLeave={() => setActionButtonsVisible(false)}
@@ -80,10 +80,13 @@ const File: FC<FileProps> = ({file, refetch}) => {
                     ? currentDir !== file._id &&
 					<FolderOpenIcon
 						className={fileView === 'list' ? classes.list__icon__folder : classes.plate__icon__folder}
-						color="primary"/>
+						color="primary"
+                        data-testid='folder-icon'
+                    />
                     :
                     <TextSnippetOutlinedIcon
                         className={fileView === 'list' ? classes.list__icon__file : classes.plate__icon__file}
+                        data-testid='file-icon'
                     />
                 }
             </div>
@@ -105,14 +108,20 @@ const File: FC<FileProps> = ({file, refetch}) => {
             <div className={fileView === 'list' ? classes.list__actions : classes.plate__actions}
                  style={!actionButtonsVisible ? {display: 'none'} : {}}>
                 {file.type !== "dir" &&
-					<IconButton color='secondary' onClick={(e) => downloadHandler(e)}>
+					<IconButton color='secondary' onClick={(e) => downloadHandler(e)}
+                        data-testid='download-icon'
+                    >
 						<CloudDownloadIcon/>
 					</IconButton>
                 }
-                <LoadingButton loading={deleteLoading} variant='text' color='secondary' onClick={deleteHandler}>
+                <LoadingButton loading={deleteLoading} variant='text' color='secondary' onClick={deleteHandler}
+                    data-testid='delete-icon'
+                >
                     <DeleteForeverIcon/>
                 </LoadingButton>
-                <IconButton color='secondary'>
+                <IconButton color='secondary'
+                    data-testid='share-icon'
+                >
                     <ShareIcon/>
                 </IconButton>
             </div>

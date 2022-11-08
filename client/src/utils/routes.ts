@@ -1,4 +1,4 @@
-import Auth from "../Pages/Auth";
+import Auth from "../Pages/Auth/Auth";
 import Main from "../Pages/Main/Main";
 import Disk from "../components/disk/Disk";
 import Profile from "../components/profile/Profile";

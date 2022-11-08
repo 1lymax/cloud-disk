@@ -13,12 +13,13 @@ const rootReducer = combineReducers({
     fileState: fileSlice.reducer
 })
 
-export const setupStore = () => {
+export const setupStore = (initialState: any = {}) => {
     return configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(userAPI.middleware)
                 .concat(fileAPI.middleware),
+        preloadedState: initialState
 
     })
 }

@@ -15,8 +15,7 @@ interface FileListProps {
 }
 
 const FileList: FC<FileListProps> = ({files, refetch, parent}) => {
-    const dirStack = useAppSelector(state => state.fileState.dirStack)
-    const fileView = useAppSelector(state => state.fileState.fileView)
+    const {dirStack, fileView} = useAppSelector(state => state.fileState)
 
     const emptyFile = {
         name: '..', size: 0, date: '', path: '', type: 'dir', user: '',

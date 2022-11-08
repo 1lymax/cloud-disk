@@ -28,7 +28,7 @@ const Main = () => {
     }, [error]);
 
     return (
-        <div className={classes.main__wrapper}>
+        <div className={classes.main__wrapper} data-testid='main-page'>
             <div className={classes.main}>
                 <div className={classes.main__title}>
                     Our service is
@@ -38,10 +38,10 @@ const Main = () => {
                         <PeopleAltIcon sx={{fontSize: 80, mr: 1}}/>
                         {isLoading
                             ?
-                            <Skeleton variant="rounded" width={120} height={60}/>
+                            <Skeleton variant="rounded" width={120} height={60} data-testid='skeleton-elem'/>
                             :
-                            data?.users.length &&
-							<Count number={String(data?.users[0].name)} duration={1000}/>
+                            data?.users &&
+							<Count number={String(data?.users)} duration={1000}/>
 
                         }
                     </div>
@@ -53,12 +53,12 @@ const Main = () => {
                         <CloudDoneIcon sx={{fontSize: 80, mr: 1}}/>
                         {isLoading
                             ?
-                            <Skeleton variant="rounded" width={180} height={60}/>
+                            <Skeleton variant="rounded" width={180} height={60} data-testid='skeleton-elem'/>
                             :
-                            data?.usedSpace.length &&
+                            data?.usedSpace &&
                             <>
-							<Count number={sizeFormat(data?.usedSpace[0].total as number)} duration={1500}/>
-                                {sizeFormat(data?.usedSpace[0].total as number, true)}
+							<Count number={sizeFormat(data?.usedSpace as number)} duration={1500}/>
+                                {sizeFormat(data?.usedSpace as number, true)}
                             </>
                         }
                     </div>
@@ -70,10 +70,10 @@ const Main = () => {
                         <SaveAsIcon sx={{fontSize: 80, mr: 1}}/>
                         {isLoading
                             ?
-                            <Skeleton variant="rounded" width={120} height={60}/>
+                            <Skeleton variant="rounded" width={120} height={60} data-testid='skeleton-elem'/>
                             :
-                            data?.files.length &&
-							<Count number={String(data?.files[0].name)} duration={3000}/>
+                            data?.files &&
+							<Count number={String(data?.files)} duration={3000}/>
 
                         }
                     </div>

@@ -22,9 +22,9 @@ const Count: FC <CountProps> = ({number, duration}) => {
     }, [number, duration])
 
     return (
-        <>
+        <div data-testid='count-elem'>
             {count}
-        </>
+        </div>
     );
 };
 

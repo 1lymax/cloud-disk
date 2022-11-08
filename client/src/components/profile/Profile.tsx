@@ -23,6 +23,7 @@ const Profile = () => {
             isSuccess: uploadSuccess,
             data: uploadData
         }] = userAPI.useUploadAvatarMutation()
+
         const [deleteAvatar, {
             error: deleteError,
             isLoading: deleteLoading,
@@ -35,7 +36,6 @@ const Profile = () => {
                 Array.from(e.target.files).forEach(file => {
                         const formData: any = new FormData()
                         formData.append('file', file)
-                        console.log('upload')
                         uploadAvatar(formData)
                     }
                 )
@@ -57,13 +57,13 @@ const Profile = () => {
                     enqueueSnackbar(getErrorMessage(deleteError), {variant: "error"});
                 if (uploadError)
                     enqueueSnackbar(getErrorMessage(uploadError), {variant: "error"});
-            }, [deleteError, deleteError]
+            }, [deleteError, uploadError]
         )
         ;
 
 
         return (
-            <div className={classes.profile}>
+            <div className={classes.profile} data-testid='profile-page'>
                 <div className={classes.profile__header}>
                     <Typography variant="h5">My Profile</Typography>
                 </div>
