@@ -8,19 +8,25 @@ import {
     LinearProgressProps,
     Typography
 } from "@mui/material";
-import React, {Key, useState} from 'react';
+import React, {FC, Key, useState} from 'react';
 import DoneIcon from '@mui/icons-material/Done';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import {useAppSelector} from "../../hooks/hooks";
-import {IUploadProgress} from "../../store/reducers/FileSlice";
+
+export interface IUploadProgress {
+    uploadProgress: File[]
+}
+
+export interface File {
+    file: String;
+    progress: number;
+}
 
 
-const UploaderProgress = () => {
+const UploaderProgress: FC <IUploadProgress> = ({uploadProgress}) => {
     const [show, setShow] = useState(false);
     const [hideCompleted, setHideCompleted] = useState(false);
-    const uploadProgress = useAppSelector(state => state.fileState.uploadProgress)
 
     const getTotal = () => {
         return uploadProgress.length
@@ -30,7 +36,7 @@ const UploaderProgress = () => {
         return uploadProgress.length - uploadProgress.filter(i => i.progress !== 100).length
     };
 
-    const showItem = (item: IUploadProgress) => {
+    const showItem = (item: File) => {
         if (!hideCompleted) return true
         if (hideCompleted && item.progress === 100) return false
         return true

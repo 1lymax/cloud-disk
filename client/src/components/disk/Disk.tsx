@@ -28,7 +28,8 @@ const Disk = () => {
         dirStack,
         fileView,
         currentDir: parent,
-        searchName: search
+        searchName: search,
+        uploadProgress
     } = useAppSelector(state => state.fileState)
     const user = useAppSelector(state => state.userState.currentUser)
     const {data, isSuccess, isLoading, error, refetch} = fileAPI.useGetFilesQuery({parent, sort, search})
@@ -120,7 +121,7 @@ const Disk = () => {
 							</Stack>
 						</Stack>
 					</Stack>
-					<UploaderProgress/>
+					<UploaderProgress uploadProgress={uploadProgress}/>
 					<Box sx={{mb: 4, m: 2,}}>
                         {fileView === 'list' && <ShowGrid cells={headerCells}/>}
 						<>
